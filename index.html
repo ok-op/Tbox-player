@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet"/>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="author" content="WOODcraft SudoR2spr" />
@@ -20,11 +20,7 @@
     <div class="container mx-auto p-4">
         <div class="title-container flex items-center">
             <img src="https://graph.org/file/a9f70e1db692fd86765e7.png" alt="terabox Icon" style="width:40px;height:40px;">
-            <h1 class="text-2xl font-bold ml-2">
-                <span id="terabox">Terabox</span>
-                <span id="video">Video</span>
-                <span id="downloader">Downloader</span>
-            </h1>
+            <h1 class="text-2xl font-bold ml-2"><span id="terabox">Terabox</span> <span id="video">Video</span> <span id="downloader">Downloader</span></h1>
         </div>
         <input type="text" id="urlInput" placeholder="Enter Terabox URL" class="mt-4 p-2 border rounded" />
         <button onclick="fetchVideoData()" class="mt-2 bg-blue-500 text-white py-2 px-4 rounded">⎙ Get Video ⎙</button>
@@ -36,7 +32,7 @@
                     <p class="vjs-no-js">
                         To view this video please enable JavaScript, and consider upgrading to a
                         web browser that
-                        <a href="https://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a>.
+                        <a href="https://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a>
                     </p>
                 </video>
             </div>
@@ -55,16 +51,20 @@
             const videoDetails = document.getElementById('videoDetails');
             const videoTitle = document.getElementById('videoTitle');
             const videoThumbnail = document.getElementById('videoThumbnail');
-            const videoPlayer = videojs('my-video');
             const fastDownload = document.getElementById('fastDownload');
             const hdDownload = document.getElementById('hdDownload');
+
+            const videoPlayer = videojs('my-video', {
+                controls: true,
+                autoplay: false,
+                preload: 'auto',
+            });
 
             if (!urlInput) {
                 alert("Please enter a valid Terabox URL.");
                 return;
             }
 
-            // Use CORS proxy for testing
             const apiUrl = `https://cors-anywhere.herokuapp.com/https://teraboxvideodownloader.nepcoderdevs.workers.dev/?url=${encodeURIComponent(urlInput)}`;
             console.log('Fetching data from:', apiUrl);
             try {
@@ -76,9 +76,8 @@
                 const videoData = await response.json();
                 console.log('Video data:', videoData);
 
-                // Access the video data
                 if (videoData.response && videoData.response.length > 0) {
-                    const data = videoData.response[0]; // Get the first item in the response array
+                    const data = videoData.response[0];
                     videoTitle.innerText = data.title;
                     videoThumbnail.href = data.thumbnail;
                     fastDownload.href = data.resolutions["Fast Download"];
@@ -97,15 +96,15 @@
             }
         }
     </script>
-    
-    <footer class="bg-blue-500 font-bold text-white text-center py-3 mt-5">
-        Powered By <a href="https://t.me/Opleech_WD" target="_blank"> ✉️ 𝐖𝐎𝐎𝐃𝐜𝐫𝐚𝐟𝐭</a>
-        <div class="footer__copyright">
-            <p class="footer__copyright-info">
-                © 2024 Video Downloader. All rights reserved.
-            </p>
-        </div>
-    </footer>
 </body>
+
+<footer class="bg-blue-500 font-bold text-white text-center py-3 mt-5">
+    Powered By <a href="https://t.me/Opleech_WD" target="_blank"> ✉️ 𝐖𝐎𝐎𝐃𝐜𝐫𝐚𝐟𝐭</a>
+    <div class="footer__copyright">
+        <p class="footer__copyright-info">
+            © 2024 Video Downloader. All rights reserved.
+        </p>
+    </div>
+</footer>
 
 </html>
