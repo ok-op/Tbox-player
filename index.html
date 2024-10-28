@@ -47,48 +47,50 @@
     <script src="https://vjs.zencdn.net/8.16.1/video.min.js"></script>
     <script>
         async function fetchVideoData() {
-            const urlInput = document.getElementById('urlInput').value;
-            const videoDetails = document.getElementById('videoDetails');
-            const videoTitle = document.getElementById('videoTitle');
-            const videoThumbnail = document.getElementById('videoThumbnail');
-            const videoPlayer = videojs('my-video');
-            const fastDownload = document.getElementById('fastDownload');
-            const hdDownload = document.getElementById('hdDownload');
+    const urlInput = document.getElementById('urlInput').value.trim();
+    const videoDetails = document.getElementById('videoDetails');
+    const videoTitle = document.getElementById('videoTitle');
+    const videoThumbnail = document.getElementById('videoThumbnail');
+    const videoPlayer = videojs('my-video');
+    const fastDownload = document.getElementById('fastDownload');
+    const hdDownload = document.getElementById('hdDownload');
 
-            // Validate URL
-            if (!urlInput.startsWith("https://teraboxapp.com/s/")) {
-                alert("Please enter a valid Terabox sharing URL.");
-                return;
-            }
+    if (!urlInput) {
+        alert("Please enter a valid Terabox URL.");
+        return;
+    }
 
-            // Terabox API URL
-            const apiUrl = `https://teraboxvideodownloader.nepcoderdevs.workers.dev/?url=${encodeURIComponent(urlInput)}`;
-            try {
-                const response = await fetch(apiUrl);
-                if (!response.ok) {
-                    const errorText = await response.text(); // Get the error text
-                    console.error('API response error:', errorText);
-                    throw new Error("Network response was not ok: " + response.statusText);
-                }
-                const videoData = await response.json();
+    // Terabox API URL
+    const apiUrl = `https://teraboxvideodownloader.nepcoderdevs.workers.dev/?url=${encodeURIComponent(urlInput)}`;
+    console.log('Fetching data from:', apiUrl);
+    try {
+        const response = await fetch(apiUrl);
+        console.log('Response:', response);
+        if (!response.ok) {
+            throw new Error("Network response was not ok");
+        }
+        const videoData = await response.json();
+        console.log('Video data:', videoData);
 
-                if (videoData.status === 'success') {
-                    videoTitle.innerText = videoData.title;
-                    videoThumbnail.href = videoData.thumbnail;
-                    fastDownload.href = videoData.resolutions.fast;
-                    hdDownload.href = videoData.resolutions.hd;
+        // Access the video data
+        if (videoData.response && videoData.response.length > 0) {
+            const data = videoData.response[0]; // Get the first item in the response array
+            videoTitle.innerText = data.title;
+            videoThumbnail.href = data.thumbnail;
+            fastDownload.href = data.resolutions["Fast Download"];
+            hdDownload.href = data.resolutions["HD Video"];
 
-                    videoPlayer.src({ type: 'video/mp4', src: videoData.video_url });
-                    videoPlayer.poster(videoData.thumbnail);
+            videoPlayer.src({ type: 'video/mp4', src: data.video_url });
+            videoPlayer.poster(data.thumbnail);
 
-                    videoDetails.style.display = "block";
-                } else {
-                    alert("Failed to retrieve video data. Please check the URL.");
-                }
-            } catch (error) {
-                console.error('Fetch error:', error);
-                alert("An error occurred while fetching video data: " + error.message);
-            }
+            videoDetails.style.display = "block";
+        } else {
+            alert("Failed to retrieve video data. Please check the URL.");
+        }
+    } catch (error) {
+        console.error('Fetch error:', error);
+        alert(`An error occurred: ${error.message}`);
+    }
         }
     </script>
 </body>
