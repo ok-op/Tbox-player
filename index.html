@@ -11,7 +11,7 @@
     <meta property="og:description" content="WDZONE Website Service Downloader Video Social Media: Terabox.">
     <title>Terabox Player & Downloader - By WOODcraft</title>
     <link rel="icon" type="image/x-icon" href="https://i.ibb.co/W2JmKgk/Op-Noor-mam.png">
-    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="./style.css" />
     <link href="https://unpkg.com/video.js@7/dist/video-js.min.css" rel="stylesheet" />
     <link href="https://unpkg.com/@videojs/themes@1/dist/forest/index.css" rel="stylesheet" />
 </head>
@@ -55,12 +55,20 @@
             const fastDownload = document.getElementById('fastDownload');
             const hdDownload = document.getElementById('hdDownload');
 
+            // Validate URL
+            if (!urlInput.startsWith("https://teraboxapp.com/s/")) {
+                alert("Please enter a valid Terabox sharing URL.");
+                return;
+            }
+
             // Terabox API URL
             const apiUrl = `https://teraboxvideodownloader.nepcoderdevs.workers.dev/?url=${encodeURIComponent(urlInput)}`;
             try {
                 const response = await fetch(apiUrl);
                 if (!response.ok) {
-                    throw new Error("Network response was not ok");
+                    const errorText = await response.text(); // Get the error text
+                    console.error('API response error:', errorText);
+                    throw new Error("Network response was not ok: " + response.statusText);
                 }
                 const videoData = await response.json();
 
@@ -79,7 +87,7 @@
                 }
             } catch (error) {
                 console.error('Fetch error:', error);
-                alert("An error occurred while fetching video data.");
+                alert("An error occurred while fetching video data: " + error.message);
             }
         }
     </script>
