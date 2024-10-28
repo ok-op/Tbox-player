@@ -47,17 +47,16 @@
 
             try {
                 const response = await fetch(apiUrl, options);
-                if (!response.ok) {
-                    throw new Error('Network response was not ok: ' + response.statusText);
-                }
-                const result = await response.json();
+                const result = await response.text(); // পরিবর্তন: json() থেকে text() করা হয়েছে
+                console.log(result); // কনসোলে ফলাফল দেখানো
+                const jsonResult = JSON.parse(result); // JSON থেকে পার্স করা হচ্ছে
                 
                 // ফলাফল চেক করুন এবং তথ্য দেখান
-                if (result && result.video) {
-                    videoTitle.innerText = result.title || "Video Title";
-                    videoPlayer.src = result.video; // ভিডিওর সোর্স সেট করুন
-                    fastDownload.href = result.fast_download; // ফাস্ট ডাউনলোড লিঙ্ক সেট করুন
-                    hdDownload.href = result.hd_download; // HD ডাউনলোড লিঙ্ক সেট করুন
+                if (jsonResult && jsonResult.video) {
+                    videoTitle.innerText = jsonResult.video.title || "Video Title"; // ভিডিও টাইটেল দেখান
+                    videoPlayer.src = jsonResult.video.download_url; // ভিডিও সোর্স সেট করুন
+                    fastDownload.href = jsonResult.video.fast_download; // ফাস্ট ডাউনলোড লিঙ্ক সেট করুন
+                    hdDownload.href = jsonResult.video.hd_download; // HD ডাউনলোড লিঙ্ক সেট করুন
                     
                     videoDetails.classList.remove("hidden"); // ভিডিও বিস্তারিত দেখান
                 } else {
