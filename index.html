@@ -46,7 +46,8 @@
                 return;
             }
 
-            const apiUrl = `https://cors-anywhere.herokuapp.com/https://teraboxvideodownloader.nepcoderdevs.workers.dev/?url=${encodeURIComponent(urlInput)}`;
+            // Direct API call without CORS proxy
+            const apiUrl = `https://teraboxvideodownloader.nepcoderdevs.workers.dev/?url=${encodeURIComponent(urlInput)}`;
             try {
                 const response = await fetch(apiUrl);
                 if (!response.ok) {
