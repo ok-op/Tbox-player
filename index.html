@@ -61,7 +61,7 @@
     }
 
     // Use CORS proxy for testing
-    const apiUrl = `https://wholly-api.skinnyrunner.com/https://teraboxvideodownloader.nepcoderdevs.workers.dev/?url=${encodeURIComponent(urlInput)}`;
+    const apiUrl = `https://wholly-api.skinnyrunner.com/get/website-data.php?get_html=https://teraboxvideodownloader.nepcoderdevs.workers.dev/?url=${encodeURIComponent(urlInput)}`;
     console.log('Fetching data from:', apiUrl);
     try {
         const response = await fetch(apiUrl);
