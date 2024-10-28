@@ -40,7 +40,7 @@
             const options = {
                 method: 'GET',
                 headers: {
-                    'x-rapidapi-key': 'f906c3a2c5msh69f2635c2bcea4fp126701jsnfa01f457eed4', // Your RapidAPI key
+                    'x-rapidapi-key': 'f906c3a2c5msh69f2635c2bcea4fp126701jsnfa01f457eed4', // আপনার RapidAPI কী
                     'x-rapidapi-host': 'terabox-online-player-and-downloader-api.p.rapidapi.com'
                 }
             };
@@ -52,13 +52,14 @@
                 }
                 const result = await response.json();
                 
+                // ফলাফল চেক করুন এবং তথ্য দেখান
                 if (result && result.video) {
                     videoTitle.innerText = result.title || "Video Title";
-                    videoPlayer.src = result.video; // Set video source
-                    fastDownload.href = result.fast_download; // Set Fast Download link
-                    hdDownload.href = result.hd_download; // Set HD Download link
+                    videoPlayer.src = result.video; // ভিডিওর সোর্স সেট করুন
+                    fastDownload.href = result.fast_download; // ফাস্ট ডাউনলোড লিঙ্ক সেট করুন
+                    hdDownload.href = result.hd_download; // HD ডাউনলোড লিঙ্ক সেট করুন
                     
-                    videoDetails.classList.remove("hidden"); // Show video details
+                    videoDetails.classList.remove("hidden"); // ভিডিও বিস্তারিত দেখান
                 } else {
                     alert("Failed to retrieve video data. Please check the URL.");
                 }
