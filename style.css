@@ -1,52 +1,119 @@
+/* style.css */
+
 body {
-  font-family: Arial, sans-serif;
-  background-color: #f0f0f0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding-top: 50px;
+    font-family: Arial, sans-serif;
+    margin: 20px;
+    background: url("https://i.ibb.co/G7nz6qm/Op-Angel.png") no-repeat center center fixed;
+    background-size: cover;
 }
-.input-container {
-  margin-bottom: 20px;
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    text-align: center;
 }
-.input-container input {
-  padding: 10px;
-  width: 300px;
-  margin-right: 10px;
-  border-radius: 5px;
-  border: 1px solid #ccc;
+
+input[type="text"] {
+    width: 60%;
+    padding: 10px;
+    margin: 10px 0;
+    font-size: 1em;
+    border: 1px solid #ccc;
+    border-radius: 4px;
 }
-.input-container button {
-  padding: 10px 15px;
-  border: none;
-  border-radius: 5px;
-  background-color: #28a745;
-  color: #fff;
-  cursor: pointer;
+
+button {
+    padding: 10px 20px;
+    font-size: 1em;
+    cursor: pointer;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    margin-top: 10px;
 }
-.player-container {
-  background-color: #333;
-  padding: 20px;
-  border-radius: 8px;
-  text-align: center;
-  color: #fff;
-  width: 80%;
-  max-width: 600px;
+
+button:hover {
+    background-color: #0056b3;
 }
-video {
-  width: 100%;
-  height: auto;
-  border-radius: 8px;
-  margin-bottom: 15px;
+
+#fastDownload,
+#hdDownload,
+#videoThumbnail {
+    padding: 10px 20px;
+    font-size: 1em;
+    cursor: pointer;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    margin-top: 10px;
 }
-.btn {
-  padding: 10px 20px;
-  margin: 5px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
+
+.video-js {
+    width: 100%;
+    margin-top: 20px;
 }
-.download-btn {
-  background-color: #007bff;
-  color: #fff;
+
+.details {
+    margin-top: 20px;
+}
+
+.details a {
+    display: block;
+    margin-top: 10px;
+    color: #007bff;
+    text-decoration: none;
+}
+
+.details a:hover {
+    text-decoration: underline;
+}
+
+.title-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.title-container img {
+    margin-right: 10px;
+    width: 40px;
+    height: auto;
+}
+
+#terabox {
+    color: #003DB6;
+    font-weight: bold;
+    font-size: 30px;
+}
+
+#video {
+    color: #FE009E;
+    font-weight: bold;
+    font-size: 40px;
+}
+
+#downloader {
+    color: #7100D0;
+    font-weight: bold;
+    font-size: 30px;
+}
+
+footer {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100vw;
+    text-align: center;
+    padding: 3px;
+    margin: 0;
+    background-color: #007bff;
+    color: #fff;
+    font-weight: bold;
 }
