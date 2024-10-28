@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet"/>
     <meta charset="UTF-8">
@@ -11,25 +10,18 @@
     <meta property="og:description" content="WDZONE Website Service Downloader Video Social Media: Terabox.">
     <title>Terabox Player & Downloader - By WOODcraft</title>
     <link rel="icon" type="image/x-icon" href="https://i.ibb.co/W2JmKgk/Op-Noor-mam.png">
-    <link rel="stylesheet" href="./style.css" />
 </head>
 
 <body>
     <div class="container mx-auto p-4">
         <div class="title-container flex items-center">
-            <img src="https://graph.org/file/a9f70e1db692fd86765e7.png" alt="terabox Icon" style="width:40px;height:40px;">
+            <img src="https://graph.org/file/a9f70e1db692fd86765e7.png" alt="Terabox Icon" style="width:40px;height:40px;">
             <h1 class="text-2xl font-bold ml-2"><span id="terabox">Terabox</span> <span id="video">Video</span> <span id="downloader">Downloader</span></h1>
         </div>
         <input type="text" id="urlInput" placeholder="Enter Terabox URL" class="mt-4 p-2 border rounded" />
         <button onclick="fetchVideoData()" class="mt-2 bg-blue-500 text-white py-2 px-4 rounded">⎙ Get Video ⎙</button>
         <div id="videoDetails" style="display: none;" class="mt-4">
             <h2 id="videoTitle" class="text-lg font-semibold"></h2>
-            <div class="video">
-                <video controls width="640" height="264">
-                    <source id="videoSource" src="" type="video/mp4" />
-                    Your browser does not support the video tag.
-                </video>
-            </div>
             <div class="details mt-2">
                 <a rel="noreferrer noopener" id="fastDownload" href="#" target="_blank" class="mr-2 text-blue-500">Fast Download</a>
                 <a rel="noreferrer noopener" id="hdDownload" href="#" target="_blank" class="mr-2 text-blue-500">HD Video</a>
@@ -46,7 +38,6 @@
             const videoThumbnail = document.getElementById('videoThumbnail');
             const fastDownload = document.getElementById('fastDownload');
             const hdDownload = document.getElementById('hdDownload');
-            const videoSource = document.getElementById('videoSource');
 
             if (!urlInput) {
                 alert("Please enter a valid Terabox URL.");
@@ -57,8 +48,10 @@
             try {
                 const response = await fetch(apiUrl);
                 if (!response.ok) {
-                    throw new Error("Network response was not ok");
+                    alert("Network response was not ok. Please try again later or check the URL.");
+                    return;
                 }
+
                 const videoData = await response.json();
 
                 if (videoData.response && videoData.response.length > 0) {
@@ -67,12 +60,8 @@
                     videoThumbnail.href = data.thumbnail;
                     fastDownload.href = data.resolutions["Fast Download"];
                     hdDownload.href = data.resolutions["HD Video"];
-
-                    // Set video source and load
-                    videoSource.src = data.video_url;
+                    
                     videoDetails.style.display = "block";
-                    videoDetails.querySelector('video').load(); // Reload the video element
-                    videoDetails.querySelector('video').play(); // Play the video automatically
                 } else {
                     alert("Failed to retrieve video data. Please check the URL.");
                 }
