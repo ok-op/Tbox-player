@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TeraBox Online Player</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+            text-align: center;
+            margin: 0;
+            padding: 20px;
+        }
+        h1 {
+            color: #2c3e50;
+            font-size: 1.8em;
+            margin-bottom: 20px;
+        }
+        input {
+            width: 80%;
+            max-width: 400px;
+            padding: 10px;
+            border: 2px solid #3498db;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            font-size: 1em;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+        }
+        button:hover {
+            background-color: #2980b9;
+        }
+        #videoContainer {
+            margin-top: 20px;
+        }
+        #timerContainer {
+            margin-top: 20px;
+            display: none; /* Hide timer container initially */
+        }
+        #timer {
+            font-size: 1.2em;
+            color: #00ff00;
+        }
+        #continueButton {
+            display: none;
+            margin-top: 10px;
+        }
+        .paragraph {
+            margin-top: 20px;
+            max-width: 600px;
+            margin-left: auto; 
+            margin-right: auto; 
+            padding: 0 15px;
+            text-align: left;
+        }
+        ul {
+            text-align: left;
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 0 15px;
+        }
+        iframe {
+            width: 100%;
+            max-width: 560px;
+            height: 315px;
+            border: none;
+        }
+        @media (min-width: 768px) {
+            h1 {
+                font-size: 2.2em;
+            }
+            #timer {
+                font-size: 1.4em;
+            }
+            button {
+                font-size: 1.1em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>TeraBox Online Player</h1>
+    <input type="text" id="videoLink" placeholder="Enter your TeraBox video link here" />
+    <button onclick="getVideo()">Get Video</button>
+
+    <center>
+        <!-- AdOto - Ad Display Code -->
+        <div id="adm-container-7106"></div>
+        <script data-cfasync="false" async type="text/javascript" src="//adoto.net/dashboard/display/items.php?7106&2689&300&4&0&0"></script>
+        <script data-cfasync="false" type="text/javascript" src="//adoto.net/dashboard/display/serve.js"></script>
+    </center>
+     <center>
+    <div id="timerContainer">
+        <div id="timer">Please wait 4  seconds...</div>
+        <button id="continueButton" onclick="streamVideo()">Click here to continue</button>
+    </div>
+    </center>
+
+    <center>
+        <!-- AdOto - Ad Display Code -->
+        <div id="adm-container-7094"></div>
+        <script data-cfasync="false" async type="text/javascript" src="//adoto.net/dashboard/display/items.php?7094&2689&3004&0&0"></script>
+        <script data-cfasync="false" type="text/javascript" src="//adoto.net/dashboard/display/serve.js"></script>
+    </center>
+
+    </center>
+
+    <h2>What is TeraBox?</h2>
+    <p>TeraBox is a free cloud storage tool, offering up to 1TB of secure storage for documents, file sharing, and videos. You can easily transfer files across devices and share with friends. Simply register an account, upload your data through the web, desktop, or mobile app, and access it from any connected device.</p>
+
+    <h2>TeraBox  Online Player</h2>
+    <p>My.Bollywoodfry.Com simplifies TeraBox file and video downloading + online watching without the need for a Terabox login or application. Download and play directly from TeraBox servers while ensuring your privacy.</p>
+
+    <h2>Supported Domains</h2>
+    <ul>
+      <center>
+        <li>www.mirrobox.com</li>
+        <li>www.nephobox.com</li>
+        <li>freeterabox.com</li>
+        <li>www.freeterabox.com</li>
+        <li>1024tera.com</li>
+        <li>4funbox.co</li>
+        <li>www.4funbox.com</li>
+        <li>terabox.app</li>
+        <li>terabox.com</li>
+        <li>www.terabox.app</li>
+        <li>terabox.fun</li>
+        <li>www.terabox.com</li>
+        <li>www.1024tera.com</li>
+        <li>www.momerybox.com</li>
+        <li>teraboxapp.com</li>
+        <li>momerybox.com</li>
+        <li>tibibox.com</li>
+        <li>www.tibibox.com</li>
+        </center>
+    </ul>
+    
+
+    <h2>Disclaimer</h2>
+    <p>My.Bollywoodfry.Com is an independent tool and is not affiliated with Flextech Inc. or terabox.app. We exist solely to provide Online Play + direct download links for TeraBox files, without hosting or storing any user data on our servers. Upholding the rights of copyright holders is of paramount importance to us, and we firmly reject illegal activities. If you believe that this website violates Terabox's rights or have any concerns, please contact us via the email address listed on our Contact page, and we will promptly respond to your inquiry.</p>
+     
+    <!-- AdOto - Ad Display Code -->
+<div id="adm-container-7108"></div><script data-cfasync="false" async type="text/javascript" src="//adoto.net/dashboard/display/items.php?7108&2689&300&4&0&0"></script><script data-cfasync="false" type="text/javascript" src="//adoto.net/dashboard/display/serve.js"></script>
+<!-- AdOto - Ad Display Code -->
+
+     
+    <div id="videoContainer"></div>
+
+    <script>
+        let countdownTimer;
+        let timeLeft = 4; // Countdown from 4 seconds
+
+        function getVideo() {
+            const link = document.getElementById('videoLink').value;
+
+            if (!link) {
+                alert("Please enter a video link.");
+                return;
+            }
+
+            // Show timer container and start countdown
+            document.getElementById('timerContainer').style.display = 'block';
+            document.getElementById('timer').style.display = 'block';
+            document.getElementById('continueButton').style.display = 'none';
+            timeLeft = 4; // Reset timer
+
+            document.getElementById('timer').innerText = `Please wait ${timeLeft} seconds...`;
+
+            countdownTimer = setInterval(() => {
+                timeLeft--;
+                document.getElementById('timer').innerText = `Please wait  ${timeLeft} seconds...`;
+
+                if (timeLeft <= 0) {
+                    clearInterval(countdownTimer);
+                    document.getElementById('timer').style.display = 'none';
+                    document.getElementById('continueButton').style.display = 'block';
+                }
+            }, 1000);
+        }
+
+        function streamVideo() {
+            const link = document.getElementById('videoLink').value;
+            const baseUrl = "https://opabhik.serv00.net/Watch.php?url="; // Update this URL if necessary
+            const fullUrl = baseUrl + encodeURIComponent(link);
+
+            document.getElementById('videoContainer').innerHTML = `<iframe src="${fullUrl}" allowfullscreen></iframe>`;
+
+            // Scroll to the video container
+            document.getElementById('videoContainer').scrollIntoView({ behavior: 'smooth' });
+
+            // Hide the timer container after video is loaded
+            document.getElementById('timerContainer').style.display = 'none';
+        }
+    </script>
+</body>
+</html>
