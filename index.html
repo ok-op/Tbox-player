@@ -47,16 +47,17 @@
 
             try {
                 const response = await fetch(apiUrl, options);
-                const result = await response.text(); // পরিবর্তন: json() থেকে text() করা হয়েছে
-                console.log(result); // কনসোলে ফলাফল দেখানো
-                const jsonResult = JSON.parse(result); // JSON থেকে পার্স করা হচ্ছে
-                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                const result = await response.json();
+
                 // ফলাফল চেক করুন এবং তথ্য দেখান
-                if (jsonResult && jsonResult.video) {
-                    videoTitle.innerText = jsonResult.video.title || "Video Title"; // ভিডিও টাইটেল দেখান
-                    videoPlayer.src = jsonResult.video.download_url; // ভিডিও সোর্স সেট করুন
-                    fastDownload.href = jsonResult.video.fast_download; // ফাস্ট ডাউনলোড লিঙ্ক সেট করুন
-                    hdDownload.href = jsonResult.video.hd_download; // HD ডাউনলোড লিঙ্ক সেট করুন
+                if (result && result.video) {
+                    videoTitle.innerText = result.video.title || "Video Title"; // ভিডিও টাইটেল দেখান
+                    videoPlayer.src = result.video.download_url; // ভিডিও সোর্স সেট করুন
+                    fastDownload.href = result.video.fast_download; // ফাস্ট ডাউনলোড লিঙ্ক সেট করুন
+                    hdDownload.href = result.video.hd_download; // HD ডাউনলোড লিঙ্ক সেট করুন
                     
                     videoDetails.classList.remove("hidden"); // ভিডিও বিস্তারিত দেখান
                 } else {
