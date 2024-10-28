@@ -54,11 +54,7 @@
             const fastDownload = document.getElementById('fastDownload');
             const hdDownload = document.getElementById('hdDownload');
 
-            const videoPlayer = videojs('my-video', {
-                controls: true,
-                autoplay: true,
-                preload: 'auto',
-            });
+            const videoPlayer = videojs('my-video');
 
             if (!urlInput) {
                 alert("Please enter a valid Terabox URL.");
@@ -69,12 +65,10 @@
             console.log('Fetching data from:', apiUrl);
             try {
                 const response = await fetch(apiUrl);
-                console.log('Response:', response);
                 if (!response.ok) {
                     throw new Error("Network response was not ok");
                 }
                 const videoData = await response.json();
-                console.log('Video data:', videoData);
 
                 if (videoData.response && videoData.response.length > 0) {
                     const data = videoData.response[0];
@@ -83,8 +77,12 @@
                     fastDownload.href = data.resolutions["Fast Download"];
                     hdDownload.href = data.resolutions["HD Video"];
 
+                    // Set video source and load
                     videoPlayer.src({ type: 'video/mp4', src: data.video_url });
-                    videoPlayer.poster(data.thumbnail);
+                    videoPlayer.load();
+                    videoPlayer.ready(() => {
+                        videoPlayer.play(); // Play the video automatically
+                    });
 
                     videoDetails.style.display = "block";
                 } else {
