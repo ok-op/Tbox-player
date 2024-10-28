@@ -60,8 +60,8 @@
         return;
     }
 
-    // Terabox API URL
-    const apiUrl = `https://teraboxvideodownloader.nepcoderdevs.workers.dev/?url=${encodeURIComponent(urlInput)}`;
+    // Use CORS proxy for testing
+    const apiUrl = `https://cors-anywhere.herokuapp.com/https://teraboxvideodownloader.nepcoderdevs.workers.dev/?url=${encodeURIComponent(urlInput)}`;
     console.log('Fetching data from:', apiUrl);
     try {
         const response = await fetch(apiUrl);
