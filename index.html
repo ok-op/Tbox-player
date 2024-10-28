@@ -4,60 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Terabox Video Player</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background-color: #f0f0f0;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding-top: 50px;
-    }
-    .input-container {
-      margin-bottom: 20px;
-    }
-    .input-container input {
-      padding: 10px;
-      width: 300px;
-      margin-right: 10px;
-      border-radius: 5px;
-      border: 1px solid #ccc;
-    }
-    .input-container button {
-      padding: 10px 15px;
-      border: none;
-      border-radius: 5px;
-      background-color: #28a745;
-      color: #fff;
-      cursor: pointer;
-    }
-    .player-container {
-      background-color: #333;
-      padding: 20px;
-      border-radius: 8px;
-      text-align: center;
-      color: #fff;
-      width: 80%;
-      max-width: 600px;
-    }
-    video {
-      width: 100%;
-      height: auto;
-      border-radius: 8px;
-      margin-bottom: 15px;
-    }
-    .btn {
-      padding: 10px 20px;
-      margin: 5px;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-    .download-btn {
-      background-color: #007bff;
-      color: #fff;
-    }
-  </style>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
@@ -94,16 +41,21 @@
       try {
         const response = await fetch(url, options);
         const result = await response.json();
-        const videoUrl = result.video_url; // আপনার API অনুযায়ী এই key চেক করতে হবে
 
-        // ভিডিও এবং ডাউনলোড লিঙ্ক সেট করা
-        document.getElementById('videoSource').src = videoUrl;
-        document.getElementById('teraboxVideo').load();
-        document.getElementById('downloadButton').href = videoUrl;
-        document.getElementById('downloadButton').style.display = "inline";
-        
-        // প্লেয়ার কন্টেইনার দেখানো
-        document.getElementById('videoContainer').style.display = "block";
+        if (result && result.video_url) { // নিশ্চিত করুন API সঠিক JSON রেসপন্স দিচ্ছে কিনা
+          const videoUrl = result.video_url;
+
+          // ভিডিও এবং ডাউনলোড লিঙ্ক সেট করা
+          document.getElementById('videoSource').src = videoUrl;
+          document.getElementById('teraboxVideo').load();
+          document.getElementById('downloadButton').href = videoUrl;
+          document.getElementById('downloadButton').style.display = "inline";
+          
+          // প্লেয়ার কন্টেইনার দেখানো
+          document.getElementById('videoContainer').style.display = "block";
+        } else {
+          alert("Failed to fetch video URL. Please check the link or try again later.");
+        }
       } catch (error) {
         console.error(error);
         alert("Failed to load video. Please check the link and try again.");
