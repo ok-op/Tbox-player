@@ -79,6 +79,7 @@
 
                     // Set video source and load
                     videoPlayer.src({ type: 'video/mp4', src: data.video_url });
+                    videoPlayer.poster(data.thumbnail); // Set thumbnail
                     videoPlayer.load();
                     videoPlayer.ready(() => {
                         videoPlayer.play(); // Play the video automatically
