@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Terabox Video Player</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f0f0f0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+    .player-container {
+      background-color: #333;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      text-align: center;
+      color: #fff;
+    }
+    video {
+      width: 100%;
+      height: auto;
+      border-radius: 8px;
+      margin-bottom: 15px;
+    }
+    .btn {
+      padding: 10px 20px;
+      margin: 5px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .play-btn {
+      background-color: #28a745;
+      color: #fff;
+    }
+    .download-btn {
+      background-color: #007bff;
+      color: #fff;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="player-container">
+    <video id="teraboxVideo" controls>
+      <source id="videoSource" src="" type="video/mp4">
+      Your browser does not support HTML5 video.
+    </video>
+    <br>
+    <button class="btn play-btn" onclick="playVideo()">Play</button>
+    <button class="btn download-btn" id="downloadButton">Download</button>
+  </div>
+
+  <script>
+    async function fetchVideo() {
+      const url = 'https://terabox-online-player-and-downloader-api.p.rapidapi.com/?link=https%3A%2F%2Fteraboxapp.com%2Fs%2F1tD839uEjRzGUbeKYg24UBg';
+      const options = {
+        method: 'GET',
+        headers: {
+          'x-rapidapi-key': 'f906c3a2c5msh69f2635c2bcea4fp126701jsnfa01f457eed4',
+          'x-rapidapi-host': 'terabox-online-player-and-downloader-api.p.rapidapi.com'
+        }
+      };
+
+      try {
+        const response = await fetch(url, options);
+        const result = await response.json();
+        const videoUrl = result.video_url; // Adjust this according to actual JSON structure
+        document.getElementById('videoSource').src = videoUrl;
+        document.getElementById('teraboxVideo').load();
+        document.getElementById('downloadButton').href = videoUrl;
+      } catch (error) {
+        console.error(error);
+      }
+    }
+
+    function playVideo() {
+      document.getElementById('teraboxVideo').play();
+    }
+
+    // Fetch the video details on page load
+    window.onload = fetchVideo;
+  </script>
+
+</body>
+</html>
