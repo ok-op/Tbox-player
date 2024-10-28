@@ -71,17 +71,17 @@
                     hdDownload.href = data.resolutions["HD Video"];
 
                     // Set video source and load
-                    videoSource.src = data.video_url; // Directly set the video URL
-                    videoElement.load(); // Reload the video element
+                    videoSource.src = data.video_url;
                     videoDetails.style.display = "block";
+                    videoElement.load(); // Reload the video element
 
-                    // Use a timeout to allow the video to load properly before playing
-                    setTimeout(() => {
+                    // Video playback check
+                    videoElement.addEventListener('canplay', () => {
                         videoElement.play().catch(error => {
                             console.error("Error playing the video:", error);
                             alert("Video playback failed. Please check the console for errors.");
                         });
-                    }, 100); // 100 milliseconds delay
+                    });
                 } else {
                     alert("Failed to retrieve video data. Please check the URL.");
                 }
