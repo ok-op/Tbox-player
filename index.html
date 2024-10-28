@@ -25,7 +25,7 @@
         <div id="videoDetails" style="display: none;" class="mt-4">
             <h2 id="videoTitle" class="text-lg font-semibold"></h2>
             <div class="video">
-                <video id="videoElement" controls width="640" height="264">
+                <video controls width="640" height="264">
                     <source id="videoSource" src="" type="video/mp4" />
                     Your browser does not support the video tag.
                 </video>
@@ -46,7 +46,6 @@
             const videoThumbnail = document.getElementById('videoThumbnail');
             const fastDownload = document.getElementById('fastDownload');
             const hdDownload = document.getElementById('hdDownload');
-            const videoElement = document.getElementById('videoElement');
             const videoSource = document.getElementById('videoSource');
 
             if (!urlInput) {
@@ -72,8 +71,8 @@
                     // Set video source and load
                     videoSource.src = data.video_url;
                     videoDetails.style.display = "block";
-                    videoElement.load(); // Reload the video element
-                    videoElement.play(); // Play the video automatically
+                    videoDetails.querySelector('video').load(); // Reload the video element
+                    videoDetails.querySelector('video').play(); // Play the video automatically
                 } else {
                     alert("Failed to retrieve video data. Please check the URL.");
                 }
