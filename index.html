@@ -12,8 +12,6 @@
     <title>Terabox Player & Downloader - By WOODcraft</title>
     <link rel="icon" type="image/x-icon" href="https://i.ibb.co/W2JmKgk/Op-Noor-mam.png">
     <link rel="stylesheet" href="./style.css" />
-    <link href="https://unpkg.com/video.js@8/dist/video-js.min.css" rel="stylesheet" />
-    <link href="https://unpkg.com/@videojs/themes@1/dist/forest/index.css" rel="stylesheet" />
 </head>
 
 <body>
@@ -27,15 +25,9 @@
         <div id="videoDetails" style="display: none;" class="mt-4">
             <h2 id="videoTitle" class="text-lg font-semibold"></h2>
             <div class="video">
-                <video id="my-video" class="video-js vjs-theme-forest" controls preload="auto" width="640" height="264">
-                    <source src="" type="video/mp4" />
-                    <source src="" type="video/webm" />
-                    <source src="" type="video/ogg" />
-                    <p class="vjs-no-js">
-                        To view this video please enable JavaScript, and consider upgrading to a
-                        web browser that
-                        <a href="https://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a>
-                    </p>
+                <video id="videoElement" controls width="640" height="264">
+                    <source id="videoSource" src="" type="video/mp4" />
+                    Your browser does not support the video tag.
                 </video>
             </div>
             <div class="details mt-2">
@@ -45,8 +37,8 @@
             </div>
         </div>
     </div>
-
-    <script src="https://unpkg.com/video.js@8/dist/video.min.js"></script>
+    
+    <script src="https://vjs.zencdn.net/8.16.1/video.min.js"></script>
     <script>
         async function fetchVideoData() {
             const urlInput = document.getElementById('urlInput').value.trim();
@@ -55,8 +47,8 @@
             const videoThumbnail = document.getElementById('videoThumbnail');
             const fastDownload = document.getElementById('fastDownload');
             const hdDownload = document.getElementById('hdDownload');
-
-            const videoPlayer = videojs('my-video');
+            const videoElement = document.getElementById('videoElement');
+            const videoSource = document.getElementById('videoSource');
 
             if (!urlInput) {
                 alert("Please enter a valid Terabox URL.");
@@ -64,7 +56,6 @@
             }
 
             const apiUrl = `https://cors-anywhere.herokuapp.com/https://teraboxvideodownloader.nepcoderdevs.workers.dev/?url=${encodeURIComponent(urlInput)}`;
-            console.log('Fetching data from:', apiUrl);
             try {
                 const response = await fetch(apiUrl);
                 if (!response.ok) {
@@ -80,13 +71,17 @@
                     hdDownload.href = data.resolutions["HD Video"];
 
                     // Set video source and load
-                    videoPlayer.src({ type: 'video/mp4', src: data.video_url });
-                    videoPlayer.load();
-                    videoPlayer.ready(() => {
-                        videoPlayer.play(); // Play the video automatically
-                    });
-
+                    videoSource.src = data.video_url; // Directly set the video URL
+                    videoElement.load(); // Reload the video element
                     videoDetails.style.display = "block";
+
+                    // Use a timeout to allow the video to load properly before playing
+                    setTimeout(() => {
+                        videoElement.play().catch(error => {
+                            console.error("Error playing the video:", error);
+                            alert("Video playback failed. Please check the console for errors.");
+                        });
+                    }, 100); // 100 milliseconds delay
                 } else {
                     alert("Failed to retrieve video data. Please check the URL.");
                 }
