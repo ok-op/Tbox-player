@@ -41,10 +41,12 @@
       try {
         const response = await fetch(url, options);
         const result = await response.json();
+        console.log(result); // API রেসপন্স চেক করার জন্য
 
-        if (result && result.video_url) { // নিশ্চিত করুন API সঠিক JSON রেসপন্স দিচ্ছে কিনা
-          const videoUrl = result.video_url;
+        // যদি API থেকে পাওয়া ফিল্ড ভিন্ন হয়, তবে নিচের লাইনটি অনুযায়ী ফিল্ডটি পরিবর্তন করুন
+        const videoUrl = result.data ? result.data.video_url : null;
 
+        if (videoUrl) { 
           // ভিডিও এবং ডাউনলোড লিঙ্ক সেট করা
           document.getElementById('videoSource').src = videoUrl;
           document.getElementById('teraboxVideo').load();
