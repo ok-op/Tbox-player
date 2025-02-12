@@ -16,17 +16,25 @@
     <link href="https://unpkg.com/@videojs/themes@1/dist/forest/index.css" rel="stylesheet" />
 </head>
 
-<body>
-    <div class="container">
-        <div class="title-container">
-            <img src="https://graph.org/file/a9f70e1db692fd86765e7.png" alt="terabox Icon" style="width:40px;height:40px;">
-            <h1><b id="terabox">Terabox</b><b id="video"> Video</b><b id="downloader"> Downloader</b></h1>
+<body class="bg-gray-100">
+    <div class="container mx-auto p-4">
+        <div class="title-container flex items-center justify-center space-x-2 mb-6">
+            <img src="https://graph.org/file/a9f70e1db692fd86765e7.png" alt="terabox Icon" class="w-10 h-10">
+            <h1 class="text-3xl font-bold">
+                <span id="terabox" class="text-blue-600">Terabox</span>
+                <span id="video" class="text-green-600"> Video</span>
+                <span id="downloader" class="text-red-600"> Downloader</span>
+            </h1>
         </div>
-        <input type="text" id="urlInput" placeholder="Enter Terabox URL" />
-        <button onclick="fetchVideoData()">⎙ Get Video ⎙</button>
-        <div id="videoDetails" style="display: none;">
-            <h2 id="videoTitle"></h2>
-            <div class="video">
+        <div class="flex flex-col items-center space-y-4">
+            <input type="text" id="urlInput" placeholder="Enter Terabox URL" class="w-full max-w-md p-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+            <button onclick="fetchVideoData()" class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                ⎙ Get Video ⎙
+            </button>
+        </div>
+        <div id="videoDetails" class="mt-6 hidden">
+            <h2 id="videoTitle" class="text-2xl font-semibold text-center mb-4"></h2>
+            <div class="video flex justify-center">
                 <video id="my-video" class="video-js vjs-theme-forest" controls preload="auto" width="640" height="264">
                     <source src="" type="video/mp4" />
                     <p class="vjs-no-js">
@@ -36,10 +44,10 @@
                     </p>
                 </video>
             </div>
-            <div class="details">
-                <a rel="noreferrer noopener" id="fastDownload" href="#" target="_blank">Fast Download</a>
-                <a rel="noreferrer noopener" id="hdDownload" href="#" target="_blank">HD Video</a>
-                <a rel="noreferrer noopener" id="videoThumbnail" href="#" target="_blank">Get Thumbnail</a>
+            <div class="details flex justify-center space-x-4 mt-4">
+                <a rel="noreferrer noopener" id="fastDownload" href="#" target="_blank" class="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600">Fast Download</a>
+                <a rel="noreferrer noopener" id="hdDownload" href="#" target="_blank" class="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600">HD Video</a>
+                <a rel="noreferrer noopener" id="videoThumbnail" href="#" target="_blank" class="px-4 py-2 bg-purple-500 text-white rounded-lg hover:bg-purple-600">Get Thumbnail</a>
             </div>
         </div>
     </div>
@@ -60,47 +68,51 @@
                 return;
             }
 
-            const apis = [
-                `https://api-aswin-sparky.koyeb.app/api/downloader/terrabox/?url=${encodeURIComponent(urlInput)}`,
-                `https://another-terabox-api.example.com/?url=${encodeURIComponent(urlInput)}`
-            ];
+            const apiUrl = `https://api-aswin-sparky.koyeb.app/api/downloader/terrabox?url=${encodeURIComponent(urlInput)}`;
+            console.log('Fetching data from:', apiUrl);
 
-            let videoData;
-            for (const apiUrl of apis) {
-                try {
-                    const response = await fetch(apiUrl);
-                    if (!response.ok) continue;
-                    videoData = await response.json();
-                    if (videoData && videoData.response) break; // Use the first successful API
-                } catch (error) {
-                    console.error('Error fetching from API:', apiUrl, error);
+            try {
+                const response = await fetch(apiUrl);
+                console.log('Response:', response);
+
+                if (!response.ok) {
+                    throw new Error(`Network response was not ok: ${response.statusText}`);
                 }
-            }
 
-            if (!videoData || !videoData.response) {
-                alert("Failed to retrieve video data. Please check the URL and try again.");
-                return;
-            }
+                const videoData = await response.json();
+                console.log('Video data:', videoData);
 
-            const data = videoData.response[0]; // Get the first item in the response array
-            videoTitle.innerText = data.title || "Untitled Video";
-            videoThumbnail.href = data.thumbnail || "#";
-            fastDownload.href = data.resolutions?.["Fast Download"] || "#";
-            hdDownload.href = data.resolutions?.["HD Video"] || "#";
+                // Check if the API response contains valid data
+                if (videoData.status && videoData.data && videoData.data.length > 0) {
+                    const data = videoData.data[0]; // Get the first item in the data array
 
-            if (data.video_url) {
-                videoPlayer.src({ type: 'video/mp4', src: data.video_url });
-                videoPlayer.poster(data.thumbnail || "");
-                videoDetails.style.display = "block";
-            } else {
-                alert("Video URL not found in the response.");
+                    // Update the UI with video data
+                    videoTitle.innerText = data.filename || "Untitled Video";
+                    videoThumbnail.href = "#"; // Thumbnail not available in the response
+                    fastDownload.href = data.downloadUrl || "#";
+                    hdDownload.href = data.downloadUrl || "#"; // Use the same URL for both fast and HD download
+
+                    // Set video source
+                    if (data.downloadUrl) {
+                        videoPlayer.src({ type: 'video/mp4', src: data.downloadUrl });
+                        videoPlayer.poster(""); // No thumbnail available
+                        videoDetails.style.display = "block";
+                    } else {
+                        throw new Error("Download URL not found in the response.");
+                    }
+                } else {
+                    throw new Error("No video data found in the response.");
+                }
+            } catch (error) {
+                console.error('Fetch error:', error);
+                alert(`Failed to retrieve video data. Please check the URL and try again. Error: ${error.message}`);
             }
         }
     </script>
 </body>
 
 <footer class="bg-blue-500 font-bold text-white text-center py-3 mt-5">
-    Powered By <a href="https://t.me/Opleech_WD" target="_blank"> ✉️ 𝐖𝐎𝐎𝐃𝐜𝐫𝐚𝐟𝐭</a>
+    Powered By <a href="https://t.me/Opleech_WD" target="_blank" class="underline">✉️ 𝐖𝐎𝐎𝐃𝐜𝐫𝐚𝐟𝐭</a>
     <div class="footer__copyright">
         <p class="footer__copyright-info">
             © 2024 Video Downloader. All rights reserved.
