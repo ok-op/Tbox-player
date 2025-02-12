@@ -60,44 +60,40 @@
                 return;
             }
 
-            const apiUrl = `https://api-aswin-sparky.koyeb.app/api/downloader/terrabox/?url=${encodeURIComponent(urlInput)}`;
-            console.log('Fetching data from:', apiUrl);
+            const apis = [
+                `https://api-aswin-sparky.koyeb.app/api/downloader/terrabox/?url=${encodeURIComponent(urlInput)}`,
+                `https://another-terabox-api.example.com/?url=${encodeURIComponent(urlInput)}`
+            ];
 
-            try {
-                const response = await fetch(apiUrl);
-                console.log('Response:', response);
-
-                if (!response.ok) {
-                    throw new Error(`Network response was not ok: ${response.statusText}`);
+            let videoData;
+            for (const apiUrl of apis) {
+                try {
+                    const response = await fetch(apiUrl);
+                    if (!response.ok) continue;
+                    videoData = await response.json();
+                    if (videoData && videoData.response) break; // Use the first successful API
+                } catch (error) {
+                    console.error('Error fetching from API:', apiUrl, error);
                 }
+            }
 
-                const videoData = await response.json();
-                console.log('Video data:', videoData);
+            if (!videoData || !videoData.response) {
+                alert("Failed to retrieve video data. Please check the URL and try again.");
+                return;
+            }
 
-                // Check if the API response contains valid data
-                if (videoData && videoData.response && videoData.response.length > 0) {
-                    const data = videoData.response[0]; // Get the first item in the response array
+            const data = videoData.response[0]; // Get the first item in the response array
+            videoTitle.innerText = data.title || "Untitled Video";
+            videoThumbnail.href = data.thumbnail || "#";
+            fastDownload.href = data.resolutions?.["Fast Download"] || "#";
+            hdDownload.href = data.resolutions?.["HD Video"] || "#";
 
-                    // Update the UI with video data
-                    videoTitle.innerText = data.title || "Untitled Video";
-                    videoThumbnail.href = data.thumbnail || "#";
-                    fastDownload.href = data.resolutions?.["Fast Download"] || "#";
-                    hdDownload.href = data.resolutions?.["HD Video"] || "#";
-
-                    // Set video source and poster
-                    if (data.video_url) {
-                        videoPlayer.src({ type: 'video/mp4', src: data.video_url });
-                        videoPlayer.poster(data.thumbnail || "");
-                        videoDetails.style.display = "block";
-                    } else {
-                        throw new Error("Video URL not found in the response.");
-                    }
-                } else {
-                    throw new Error("No video data found in the response.");
-                }
-            } catch (error) {
-                console.error('Fetch error:', error);
-                alert(`Failed to retrieve video data. Please check the URL and try again. Error: ${error.message}`);
+            if (data.video_url) {
+                videoPlayer.src({ type: 'video/mp4', src: data.video_url });
+                videoPlayer.poster(data.thumbnail || "");
+                videoDetails.style.display = "block";
+            } else {
+                alert("Video URL not found in the response.");
             }
         }
     </script>
