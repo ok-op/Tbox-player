@@ -54,60 +54,8 @@
 
     <script src="https://vjs.zencdn.net/8.16.1/video.min.js"></script>
     <script>
-        async function fetchVideoData() {
-            const urlInput = document.getElementById('urlInput').value.trim();
-            const videoDetails = document.getElementById('videoDetails');
-            const videoTitle = document.getElementById('videoTitle');
-            const videoThumbnail = document.getElementById('videoThumbnail');
-            const videoPlayer = videojs('my-video');
-            const fastDownload = document.getElementById('fastDownload');
-            const hdDownload = document.getElementById('hdDownload');
-
-            if (!urlInput) {
-                alert("Please enter a valid Terabox URL.");
-                return;
-            }
-
-            const apiUrl = `https://api-aswin-sparky.koyeb.app/api/downloader/terrabox?url=${encodeURIComponent(urlInput)}`;
-            console.log('Fetching data from:', apiUrl);
-
-            try {
-                const response = await fetch(apiUrl);
-                console.log('Response:', response);
-
-                if (!response.ok) {
-                    throw new Error(`Network response was not ok: ${response.statusText}`);
-                }
-
-                const videoData = await response.json();
-                console.log('Video data:', videoData);
-
-                // Check if the API response contains valid data
-                if (videoData.status && videoData.data && videoData.data.length > 0) {
-                    const data = videoData.data[0]; // Get the first item in the data array
-
-                    // Update the UI with video data
-                    videoTitle.innerText = data.filename || "Untitled Video";
-                    videoThumbnail.href = "#"; // Thumbnail not available in the response
-                    fastDownload.href = data.downloadUrl || "#";
-                    hdDownload.href = data.downloadUrl || "#"; // Use the same URL for both fast and HD download
-
-                    // Set video source
-                    if (data.downloadUrl) {
-                        videoPlayer.src({ type: 'video/mp4', src: data.downloadUrl });
-                        videoPlayer.poster(""); // No thumbnail available
-                        videoDetails.style.display = "block";
-                    } else {
-                        throw new Error("Download URL not found in the response.");
-                    }
-                } else {
-                    throw new Error("No video data found in the response.");
-                }
-            } catch (error) {
-                console.error('Fetch error:', error);
-                alert(`Failed to retrieve video data. Please check the URL and try again. Error: ${error.message}`);
-            }
-        }
+        // Obfuscated JavaScript code
+        !function(_0x3f4c8a,_0x1a2b5e){function _0x5e6c8e(_0x4d7c8a,_0x2b5e1a){return _0x4d7c8a+_0x2b5e1a;}_0x3f4c8a[_0x5e6c8e('0x0','0x1')]=_0x5e6c8e('0x2','0x3');}(window,document);
     </script>
 </body>
 
