@@ -63,7 +63,8 @@
     // Use CORS proxy for testing
     // https://api-aswin-sparky.koyeb.app/api/downloader/terrabox?url=
     // const apiUrl = `https://cors-anywhere.herokuapp.com/https://teraboxvideodownloader.nepcoderdevs.workers.dev/?url=${encodeURIComponent(urlInput)}`;
-    const apiUrl = `https://cors-anywhere.herokuapp.com/https://api-aswin-sparky.koyeb.app/api/downloader/terrabox/?url=${encodeURIComponent(urlInput)}`;        
+    // const apiUrl = `https://cors-anywhere.herokuapp.com/https://api-aswin-sparky.koyeb.app/api/downloader/terrabox/?url=${encodeURIComponent(urlInput)}`;
+    const apiUrl = `https://api-aswin-sparky.koyeb.app/api/downloader/terrabox/?url=${encodeURIComponent(urlInput)}`;       
     console.log('Fetching data from:', apiUrl);
     try {
         const response = await fetch(apiUrl);
