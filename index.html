@@ -1,14 +1,123 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Terabox Downloader - Hidden Code</title>
+    <meta name="author" content="WOODcraft SudoR2spr" />
+    <meta name="keywords" content="WDzone, WDZONE, Terabox Downloader" />
+    <meta name="description" content="WDZONE Website Service Downloader Video Social Media: Terabox." />
+    <meta property="og:description" content="WDZONE Website Service Downloader Video Social Media: Terabox.">
+    <title>Terabox Player & Downloader - By WOODcraft</title>
+    <link rel="icon" type="image/x-icon" href="https://i.ibb.co/W2JmKgk/Op-Noor-mam.png">
+    <link rel="stylesheet" href="./style.css" />
+    <link href="https://unpkg.com/video.js@7/dist/video-js.min.css" rel="stylesheet" />
+    <link href="https://unpkg.com/@videojs/themes@1/dist/forest/index.css" rel="stylesheet" />
 </head>
-<body>
-    <iframe 
-        src="data:text/html;base64,PCFET0NUWVBFIGh0bWw+CjxodG1sIGxhbmc9ImVuIj4KICAgIDxoZWFkPgogICAgICAgIDxsaW5rIGhyZWY9Imh0dHBzOi8vY2RuLmpzZGVsaXZyLm5ldC9ucG0vdGFpbHdpbmRjc3NAMi4yLjE5L2Rpc3QvdGFpbHdpbmQubWluLmNzcyIgcmVsPSJzdHlsZXNoZWV0IiAvPgogICAgICAgIDxtZXRhIGNoYXJzZXQ9IlVURi04Ij4KICAgICAgICA8bWV0YSBuYW1lPSJ2aWV3cG9ydCIgY29udGVudD0id2lkdGg9ZGV2aWNlLXdpZHRoLCBpbml0aWFsLXNjYWxlPTEuMCI+CiAgICAgICAgPG1ldGEgbmFtZT0iYXV0aG9yIiBjb250ZW50PSJXT09EY3JhZnQgU3Vkb1Iyc3ByIiAvPgogICAgICAgIDxtZXRhIG5hbWU9ImtleXdvcmRzIiBjb250ZW50PSJXRFpvbmUsIFdEWk9ORSwgVGVyYWJveCBEb3dubG9hZGVyIiAvPgogICAgICAgIDxtZXRhIG5hbWU9ImRlc2NyaXB0aW9uIiBjb250ZW50PSJXRFpPTkUgV2Vic2l0ZSBTZXJ2aWNlIERvd25sb2FkZXIgVmlkZW8gU29jaWFsIE1lZGlhOiBUZXJhYm94LiIgLz4KICAgICAgICA8bWV0YSBwcm9wZXJ0eT0ib2c6ZGVzY3JpcHRpb24iIGNvbnRlbnQ9IldEWk9ORSBXZWJzaXRlIFNlcnZpY2UgRG93bmxvYWRlciBWaWRlbyBTb2NpYWwgTWVkaWE6IFRlcmFib3guIj4KICAgICAgICA8dGl0bGU+VGVyYWJveCBQbGF5ZXIgJiBEb3dubG9hZGVyIC0gQnkgV09PRGNyYWZ0PC90aXRsZT4KICAgICAgICA8bGluayByZWw9Imljb24iIHR5cGU9ImltYWdlL3gtaWNvbiIgaHJlZj0iaHR0cHM6Ly9pLmltZ2IuY28vVzJKbUtnL09wTm9vcl9tYW0ucG5nIj4KICAgICAgICA8bGluayByZWw9InN0eWxlc2hlZXQiIGhyZWY9Ii4vc3R5bGUuY3NzIiAvPgogICAgICAgIDxsaW5rIGhyZWY9Imh0dHBzOi8vdW5wa2cuY29tL3ZpZGVvLmpzQDcvZGlzdC92aWRlby1qcy5taW4uY3NzIiByZWw9InN0eWxlc2hlZXQiIC8+CiAgICAgICAgPGxpbmsgaHJlZj0iaHR0cHM6Ly91bnBrZy5jb20vQHZpZGVvanMvdGhlbWVzQDEvZGlzdC9mb3Jlc3QvaW5kZXguY3NzIiByZWw9InN0eWxlc2hlZXQiIC8+CiAgICA8L2hlYWQ+CiAgICA8Ym9keSBjbGFzcz0iYmctZ3JheS0xMDAiPgogICAgICAgIDxkaXYgY2xhc3M9ImNvbnRhaW5lciBteC1hdXRvIHAtNCI+CiAgICAgICAgICAgIDxkaXYgY2xhc3M9InRpdGxlLWNvbnRhaW5lciBmbGV4IGl0ZW1zLWNlbnRlciBqdXN0aWZ5LWNlbnRlciBzcGFjZS14LTIgbWItNiI+CiAgICAgICAgICAgICAgICA8aW1nIHNyYz0iaHR0cHM6Ly9ncmFwaC5vcmcvZmlsZS9hOWY3MGUxZGI2OTJmZDg2NzVlNy5wbmciIGFsdD0idGVyYWJveCBJY29uIiBjbGFzcz0idzEwIGgxMCI+CiAgICAgICAgICAgICAgICA8aDEgY2xhc3M9InRleHQtM3hsIGZvbnQtYm9sZCI+CiAgICAgICAgICAgICAgICAgICAgPHNwYW4gaWQ9InRlcmFib3giIGNsYXNzPSJ0ZXh0LWJsdWUtNjAwIj5UZXJhYm94PC9zcGFuPgogICAgICAgICAgICAgICAgICAgIDxzcGFuIGlkPSJ2aWRlbyIgY2xhc3M9InRleHQtZ3JlZW4tNjAwIj4gVmlkZW88L3NwYW4+CiAgICAgICAgICAgICAgICAgICAgPHNwYW4gaWQ9ImRvd25sb2FkZXIiIGNsYXNzPSJ0ZXh0LXJlZC02MDAiPiBEb3dubG9hZGVyPC9zcGFuPgogICAgICAgICAgICAgICAgPC9oMT4KICAgICAgICAgICAgPC9kaXY+CiAgICAgICAgICAgIDxkaXYgY2xhc3M9ImZsZXggZmxleC1jb2wgaXRlbXMtY2VudGVyIHNwYWNlLXktNCI+CiAgICAgICAgICAgICAgICA8aW5wdXQgdHlwZT0idGV4dCIgaWQ9InVybElucHV0IiBwbGFjZWhvbGRlcj0iRW50ZXIgVGVyYWJveCBVUkwiIGNsYXNzPSJ3LWZ1bGwgbWF4LXctbWQgcC0yIGJvcmRlciBib3JkZXItZ3JheS0zMDAgcm91bmRlZC1sZyBzaGFkb3ctc20gZm9jdXM6b3V0bGluZS1ub25lIGZvY3VzOnJpbmctMiBmb2N1czpyaW5nLWJsdWUtNTAwIiAvPgogICAgICAgICAgICAgICAgPGJ1dHRvbiBvbmNsaWNrPSJmZXRjaFZpZGVvRGF0YSgpIiBjbGFzcz0icHgtNCBweS0yIGJnLWJsdWUtNTAwIHRleHQtd2hpdGUgcm91bmRlZC1sZyBob3ZlcjpiZy1ibHVlLTYwMCBmb2N1czpvdXRsaW5lLW5vbmUgZm9jdXM6cmluZy0yIGZvY3VzOnJpbmctYmx1ZS01MDAiPgogICAgICAgICAgICAgICAgICAgIOKfqSBHZXQgVmlkZW8g4p+pCiAgICAgICAgICAgICAgICA8L2J1dHRvbj4KICAgICAgICAgICAgPC9kaXY+CiAgICAgICAgICAgIDxkaXYgaWQ9InZpZGVvRGV0YWlscyIgY2xhc3M9Im10LTYgaGlkZGVuIj4KICAgICAgICAgICAgICAgIDxoMiBpZD0idmlkZW9UaXRsZSIgY2xhc3M9InRleHQtMnhsIGZvbnQtc2VtaWJvbGQgdGV4dC1jZW50ZXIgbWItNCI+PC9oMj4KICAgICAgICAgICAgICAgIDxkaXYgY2xhc3M9InZpZGVvIGZsZXgganVzdGlmeS1jZW50ZXIiPgogICAgICAgICAgICAgICAgICAgIDx2aWRlbyBpZD0ibXktdmlkZW8iIGNsYXNzPSJ2aWRlby1qcyB2anMtdGhlbWUtZm9yZXN0IiBjb250cm9scyBwcmVsb2FkPSJhdXRvIiB3aWR0aD0iNjQwIiBoZWlnaHQ9IjI2NCI+CiAgICAgICAgICAgICAgICAgICAgICAgIDxzb3VyY2Ugc3JjPSIiIHR5cGU9InZpZGVvL21wNCIgLz4KICAgICAgICAgICAgICAgICAgICAgICAgPHAgY2xhc3M9InZqcy1uby1qcyI+CiAgICAgICAgICAgICAgICAgICAgICAgICAgICBUbyB2aWV3IHRoaXMgdmlkZW8gcGxlYXNlIGVuYWJsZSBKYXZhU2NyaXB0LCBhbmQgY29uc2lkZXIgdXBncmFkaW5nIHRvCiAgICAgICAgICAgICAgICAgICAgICAgICAgICA8YSBocmVmPSJodHRwczovL3ZpZGVvanMuY29tL2h0bWw1LXZpZGVvLXN1cHBvcnQvIiB0YXJnZXQ9Il9ibGFuayI+YSB3ZWIgYnJvd3NlciB0aGF0IHN1cHBvcnRzIEhUTUw1IHZpZGVvPC9hPgogICAgICAgICAgICAgICAgICAgICAgICA8L3A+CiAgICAgICAgICAgICAgICAgICAgPC92aWRlbz4KICAgICAgICAgICAgICAgIDwvZGl2PgogICAgICAgICAgICAgICAgPGRpdiBjbGFzcz0iZGV0YWlscyBmbGV4IGp1c3RpZnktY2VudGVyIHNwYWNlLXgtNCBtdC00Ij4KICAgICAgICAgICAgICAgICAgICA8YSByZWw9Im5vcmVmZXJyZXIgbm9vcGVuZXIiIGlkPSJmYXN0RG93bmxvYWQiIGhyZWY9IiMiIHRhcmdldD0iX2JsYW5rIiBjbGFzcz0icHgtNCBweS0yIGJnLWdyZWVuLTUwMCB0ZXh0LXdoaXRlIHJvdW5kZWQtbGcgaG92ZXI6YmctZ3JlZW4tNjAwIj5GYXN0IERvd25sb2FkPC9hPgogICAgICAgICAgICAgICAgICAgIDxhIHJlbD0ibm9yZWZlcnJlciBub29wZW5lciIgaWQ9ImhkRG93bmxvYWQiIGhyZWY9IiMiIHRhcmdldD0iX2JsYW5rIiBjbGFzcz0icHgtNCBweS0yIGJnLXJlZC01MDAgdGV4dC13aGl0ZSByb3VuZGVkLWxnIGhvdmVyOmJnLXJlZC02MDAiPkhEIFZpZGVvPC9hPgogICAgICAgICAgICAgICAgICAgIDxhIHJlbD0ibm9yZWZlcnJlciBub29wZW5lciIgaWQ9InZpZGVvVGh1bWJuYWlsIiBocmVmPSIjIiB0YXJnZXQ9Il9ibGFuayIgY2xhc3M9InB4LTQgcHktMiBiZy1wdXJwbGUtNTAwIHRleHQtd2hpdGUgcm91bmRlZC1sZyBob3ZlcjpiZy1wdXJwbGUtNjAwIj5HZXQgVGh1bWJuYWlsPC9hPgogICAgICAgICAgICAgICAgPC9kaXY+CiAgICAgICAgICAgIDwvZGl2PgogICAgICAgIDwvZGl2PgogICAgPC9ib2R5Pgo8L2h0bWw+" 
-        style="width:100%; height:100vh; border:none;"
-    ></iframe>
+
+<body class="bg-gray-100">
+    <div class="container mx-auto p-4">
+        <div class="title-container flex items-center justify-center space-x-2 mb-6">
+            <img src="https://graph.org/file/a9f70e1db692fd86765e7.png" alt="terabox Icon" class="w-10 h-10">
+            <h1 class="text-3xl font-bold">
+                <span id="terabox" class="text-blue-600">Terabox</span>
+                <span id="video" class="text-green-600"> Video</span>
+                <span id="downloader" class="text-red-600"> Downloader</span>
+            </h1>
+        </div>
+        <div class="flex flex-col items-center space-y-4">
+            <input type="text" id="urlInput" placeholder="Enter Terabox URL" class="w-full max-w-md p-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500" />
+            <button onclick="fetchVideoData()" class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                ⎙ Get Video ⎙
+            </button>
+        </div>
+        <div id="videoDetails" class="mt-6 hidden">
+            <h2 id="videoTitle" class="text-2xl font-semibold text-center mb-4"></h2>
+            <div class="video flex justify-center">
+                <video id="my-video" class="video-js vjs-theme-forest" controls preload="auto" width="640" height="264">
+                    <source src="" type="video/mp4" />
+                    <p class="vjs-no-js">
+                        To view this video please enable JavaScript, and consider upgrading to a
+                        web browser that
+                        <a href="https://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a>
+                    </p>
+                </video>
+            </div>
+            <div class="details flex justify-center space-x-4 mt-4">
+                <a rel="noreferrer noopener" id="fastDownload" href="#" target="_blank" class="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600">Fast Download</a>
+                <a rel="noreferrer noopener" id="hdDownload" href="#" target="_blank" class="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600">HD Video</a>
+                <a rel="noreferrer noopener" id="videoThumbnail" href="#" target="_blank" class="px-4 py-2 bg-purple-500 text-white rounded-lg hover:bg-purple-600">Get Thumbnail</a>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://vjs.zencdn.net/8.16.1/video.min.js"></script>
+    <script>
+        async function fetchVideoData() {
+            const urlInput = document.getElementById('urlInput').value.trim();
+            const videoDetails = document.getElementById('videoDetails');
+            const videoTitle = document.getElementById('videoTitle');
+            const videoThumbnail = document.getElementById('videoThumbnail');
+            const videoPlayer = videojs('my-video');
+            const fastDownload = document.getElementById('fastDownload');
+            const hdDownload = document.getElementById('hdDownload');
+
+            if (!urlInput) {
+                alert("Please enter a valid Terabox URL.");
+                return;
+            }
+
+            const apiUrl = `https://api-aswin-sparky.koyeb.app/api/downloader/terrabox?url=${encodeURIComponent(urlInput)}`;
+            console.log('Fetching data from:', apiUrl);
+
+            try {
+                const response = await fetch(apiUrl);
+                console.log('Response:', response);
+
+                if (!response.ok) {
+                    throw new Error(`Network response was not ok: ${response.statusText}`);
+                }
+
+                const videoData = await response.json();
+                console.log('Video data:', videoData);
+
+                // Check if the API response contains valid data
+                if (videoData.status && videoData.data && videoData.data.length > 0) {
+                    const data = videoData.data[0]; // Get the first item in the data array
+
+                    // Update the UI with video data
+                    videoTitle.innerText = data.filename || "Untitled Video";
+                    videoThumbnail.href = "#"; // Thumbnail not available in the response
+                    fastDownload.href = data.downloadUrl || "#";
+                    hdDownload.href = data.downloadUrl || "#"; // Use the same URL for both fast and HD download
+
+                    // Set video source
+                    if (data.downloadUrl) {
+                        videoPlayer.src({ type: 'video/mp4', src: data.downloadUrl });
+                        videoPlayer.poster(""); // No thumbnail available
+                        videoDetails.style.display = "block";
+                    } else {
+                        throw new Error("Download URL not found in the response.");
+                    }
+                } else {
+                    throw new Error("No video data found in the response.");
+                }
+            } catch (error) {
+                console.error('Fetch error:', error);
+                alert(`Failed to retrieve video data. Please check the URL and try again. Error: ${error.message}`);
+            }
+        }
+    </script>
 </body>
+
+<footer class="bg-blue-500 font-bold text-white text-center py-3 mt-5">
+    Powered By <a href="https://t.me/Opleech_WD" target="_blank" class="underline">✉️ 𝐖𝐎𝐎𝐃𝐜𝐫𝐚𝐟𝐭</a>
+    <div class="footer__copyright">
+        <p class="footer__copyright-info">
+            © 2024 Video Downloader. All rights reserved.
+        </p>
+    </div>
+</footer>
+
 </html>
