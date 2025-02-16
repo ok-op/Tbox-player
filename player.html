@@ -28,7 +28,6 @@
             display: none;
             border-radius: 8px;
         }
-        
         /* ✅ 3D Loading Spinner */
         #loadingSpinner {
             display: none;
@@ -44,7 +43,6 @@
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
-
         /* ✅ Fixed Footer (Centered) */
         .footer {
             position: fixed;
@@ -57,6 +55,30 @@
             font-size: 14px;
             left: 0;
             right: 0;
+        }
+        /* ✅ Video Player Modal */
+        #videoModal {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.8);
+            padding: 20px;
+            border-radius: 10px;
+        }
+        #videoModal video {
+            width: 100%;
+            max-width: 600px;
+            border-radius: 8px;
+        }
+        .close-btn {
+            background: red;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+            margin-top: 10px;
         }
     </style>
 </head>
@@ -78,12 +100,17 @@
         <a id="downloadButton" style="display: none;" download>
             <button>📥 Download</button>
         </a>
-        <a id="watchButton" style="display: none;" target="_blank">
-            <button>▶ Watch Online</button>
-        </a>
+        <button id="watchButton" style="display: none;" onclick="openVideoPlayer()">▶ Watch Online</button>
         <a id="thumbButton" style="display: none;" download>
             <button>🖼 Download Thumbnail</button>
         </a>
+    </div>
+
+    <!-- ✅ Video Modal Player -->
+    <div id="videoModal">
+        <video id="videoPlayer" controls></video>
+        <br>
+        <button class="close-btn" onclick="closeVideoPlayer()">Close</button>
     </div>
 
     <!-- ✅ Fixed Footer -->
@@ -92,6 +119,8 @@
     </div>
 
     <script>
+        let videoURL = "";
+
         function fetchDownloadLink() {
             const url = document.getElementById('urlInput').value.trim();
             if (!url) {
@@ -124,11 +153,10 @@
                     downloadButton.href = data.downloadLink;
                     downloadButton.setAttribute("download", data.filename || "video.mp4");
 
-                    // ✅ **Watch Online Button (No Download - Stream Only)**
+                    // ✅ **Watch Online Button (Updated)**
                     const watchButton = document.getElementById('watchButton');
                     watchButton.style.display = 'inline-block';
-                    watchButton.href = `https://www.video-streaming.site/player?src=${encodeURIComponent(data.downloadLink)}`;
-                    watchButton.setAttribute("target", "_blank");
+                    videoURL = data.downloadLink;
 
                     // ✅ **Thumbnail**
                     const thumbnail = document.getElementById('thumbnail');
@@ -153,6 +181,23 @@
                 spinner.style.display = "none";
                 button.disabled = false;
             });
+        }
+
+        // ✅ Open Video Player Modal
+        function openVideoPlayer() {
+            const videoPlayer = document.getElementById('videoPlayer');
+            if (videoURL) {
+                videoPlayer.src = videoURL;
+                document.getElementById('videoModal').style.display = 'block';
+            } else {
+                alert("Video not available.");
+            }
+        }
+
+        // ✅ Close Video Player
+        function closeVideoPlayer() {
+            document.getElementById('videoModal').style.display = 'none';
+            document.getElementById('videoPlayer').pause();
         }
     </script>
 
