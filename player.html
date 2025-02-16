@@ -123,13 +123,26 @@
     </button>
 
     <div id="downloadSection">
-        <p class="info">📄 Filename: <span id="fileName">Loading...</span></p>
-        <p class="info">📦 File Size: <span id="fileSize">Loading...</span></p>
-        <img id="thumbnail" src="" alt="Video Thumbnail">
-        <br>
-        <a id="downloadButton" target="_blank" download>⬇ Download Video</a>
-        <a id="watchButton" target="_blank">▶ Watch Online</a>
-        <a id="thumbButton" target="_blank" download>📸 Download Thumbnail</a>
+    <p class="info">📄 Filename: <span id="fileName">Loading...</span></p>
+    <p class="info">📦 File Size: <span id="fileSize">Loading...</span></p>
+
+    <!-- ✅ Thumbnail Image (Initially Hidden) -->
+    <img id="thumbnail" src="" alt="Thumbnail" style="max-width: 100%; display: none; border-radius: 10px; margin: 10px 0; box-shadow: 3px 3px 10px rgba(0,0,0,0.2);">
+
+    <!-- ✅ Thumbnail Download Button -->
+    <a id="thumbButton" style="display: none; padding: 10px; background: #ff9800; color: white; text-decoration: none; border-radius: 5px; margin-right: 10px;">
+        ⬇ Download Thumbnail
+    </a>
+
+    <!-- ✅ Watch Online Button -->
+    <a id="watchButton" style="display: none; padding: 10px; background: #00bcd4; color: white; text-decoration: none; border-radius: 5px;">
+        ▶ Watch Online
+    </a>
+
+    <br><br>
+    <a id="downloadButton" target="_blank" style="display: none; padding: 12px; background: #007bff; color: white; text-decoration: none; border-radius: 5px; font-weight: bold;">
+        ⬇ Download Video
+    </a>
     </div>
 
     <footer>
@@ -163,34 +176,30 @@
                 document.getElementById('fileSize').innerText = data.size || 'Unknown Size';
                 document.getElementById('downloadSection').style.display = 'block';
 
-                // ✅ **ডাউনলোড বাটন ফিক্স**
+                // ✅ **Download Button**
                 const downloadButton = document.getElementById('downloadButton');
                 downloadButton.style.display = 'inline-block';
                 downloadButton.href = data.downloadLink;
                 downloadButton.setAttribute("download", data.filename || "video.mp4");
 
-                // ✅ **Watch Online বাটন ফিক্স**
+                // ✅ **Watch Online Button Fix**
                 const watchButton = document.getElementById('watchButton');
                 watchButton.style.display = 'inline-block';
-                watchButton.href = `https://video-player-page.com?url=${encodeURIComponent(data.downloadLink)}`;  
+                watchButton.href = data.downloadLink;
+                watchButton.setAttribute("target", "_blank"); // নতুন ট্যাবে ওপেন হবে
                 watchButton.removeAttribute("download"); // ডাউনলোড বন্ধ করতে 
 
-                // ✅ **Thumbnail সেটআপ**
+                // ✅ **Thumbnail Fix**
                 const thumbnail = document.getElementById('thumbnail');
+                const thumbButton = document.getElementById('thumbButton');
                 if (data.thumbnail) {
                     thumbnail.src = data.thumbnail;
                     thumbnail.style.display = 'block';
-                } else {
-                    thumbnail.style.display = 'none';
-                }
-
-                // ✅ **Thumbnail Download Button ফিক্স**
-                const thumbButton = document.getElementById('thumbButton');
-                if (data.thumbnail) {
                     thumbButton.style.display = 'inline-block';
                     thumbButton.href = data.thumbnail;
                     thumbButton.setAttribute("download", "thumbnail.jpg");
                 } else {
+                    thumbnail.style.display = 'none';
                     thumbButton.style.display = 'none';
                 }
             } else {
