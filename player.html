@@ -160,32 +160,23 @@
         }
 
         // ✅ Modal Elements
-        const modal = document.getElementById("videoModal");
-        const videoPlayer = document.getElementById("videoPlayer");
-        const closeModal = document.querySelector(".close");
+const modal = document.getElementById("videoModal");
+const videoPlayer = document.getElementById("videoPlayer");
+const closeModal = document.querySelector(".close");
 
-        // ✅ ভিডিও প্লে করার ফাংশন
-        function openVideoModal(videoUrl) {
-            videoPlayer.src = videoUrl;
-            modal.style.display = "flex"; // ✅ মোডাল দেখানো হবে
-            videoPlayer.play(); // ✅ ভিডিও প্লে শুরু হবে
-        }
+// ✅ ভিডিও প্লে করার ফাংশন
+function openVideoModal(videoUrl) {
+    videoPlayer.src = videoUrl;
+    modal.style.display = "flex"; // ✅ মোডাল দেখানো হবে
+    videoPlayer.play(); // ✅ ভিডিও প্লে শুরু হবে
+}
 
-        // ✅ Modal বন্ধ করার লজিক
-        closeModal.onclick = function() {
-            modal.style.display = "none";
-            videoPlayer.pause();
-            videoPlayer.src = ""; // ✅ ভিডিও বন্ধ হলে URL রিসেট করুন
-        };
-
-        // ✅ Modal বাইরের অংশে ক্লিক করলে বন্ধ হবে
-        window.onclick = function(event) {
-            if (event.target == modal) {
-                modal.style.display = "none";
-                videoPlayer.pause();
-                videoPlayer.src = ""; // ✅ ভিডিও বন্ধ হলে URL রিসেট করুন
-            }
-        };
+// ✅ শুধুমাত্র ক্লোজ বাটনে ক্লিক করলে Modal বন্ধ হবে
+closeModal.onclick = function() {
+    modal.style.display = "none";
+    videoPlayer.pause();
+    videoPlayer.src = ""; // ✅ ভিডিও বন্ধ হলে URL রিসেট করুন
+};
     </script>
 
 </body>
