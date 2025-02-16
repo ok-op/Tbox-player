@@ -52,10 +52,12 @@
             margin: 10px auto;
             width: 40px;
             height: 40px;
+            border: 6px solid #0044ff;
+            border-top: 6px solid transparent;
             border-radius: 50%;
-            border: 6px solid transparent;
-            border-top-color: #007bff;
             animation: spin 1s linear infinite;
+            position: absolute;
+            transform: translateY(-50%);
         }
         @keyframes spin {
             0% { transform: rotate(0deg); }
@@ -135,7 +137,7 @@
     <div id="videoModal">
         <video id="videoPlayer" controls></video>
         <br>
-        <button class="close-btn" onclick="closeVideoPlayer()"><b><i class="fa fa-times" aria-hidden="true"></i>Close</button>
+        <button class="close-btn" onclick="closeVideoPlayer()"><b><i class="fa fa-times" aria-hidden="true"></i> Close</button>
     </div>
 
     <!-- ✅ Fixed Footer -->
