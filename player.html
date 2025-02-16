@@ -31,41 +31,16 @@
         #loadingSpinner {
             display: none;
         }
-        /* ✅ Modal Styles */
-        .modal {
-            display: none;
+        /* ✅ Fixed Footer */
+        .footer {
             position: fixed;
-            z-index: 1000;
-            left: 0;
-            top: 0;
+            bottom: 0;
             width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.8);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-        .modal-content {
-            background-color: white;
+            background-color: #333;
+            color: white;
+            text-align: center;
             padding: 10px;
-            width: 80%;
-            border-radius: 8px;
-            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
-            position: relative;
-        }
-        .close {
-            color: red;
-            position: absolute;
-            top: 10px;
-            right: 15px;
-            font-size: 28px;
-            font-weight: bold;
-            cursor: pointer;
-        }
-        video {
-            display: none; /* ✅ ভিডিও প্লেয়ার প্রথমে লুকানো থাকবে */
-            width: 100%;
-            border-radius: 8px;
+            font-size: 14px;
         }
     </style>
 </head>
@@ -91,12 +66,9 @@
         </a>
     </div>
 
-    <!-- ✅ Modal for Video Player -->
-    <div id="videoModal" class="modal">
-        <div class="modal-content">
-            <span class="close">&times;</span>
-            <video id="videoPlayer" controls></video>
-        </div>
+    <!-- ✅ Fixed Footer -->
+    <div class="footer">
+        Developer by : WOODcraft
     </div>
 
     <script>
@@ -132,11 +104,11 @@
                     downloadButton.href = data.downloadLink;
                     downloadButton.setAttribute("download", data.filename || "video.mp4");
 
-                    // ✅ **Watch Online Button**
+                    // ✅ **Watch Online Button (New Tab)**
                     const watchButton = document.getElementById('watchButton');
                     watchButton.style.display = 'inline-block';
                     watchButton.onclick = function() {
-                        openVideoModal(data.downloadLink); // ✅ ভিডিও প্লে করার জন্য ফাংশন কল
+                        window.open(data.downloadLink, '_blank'); // ✅ নতুন পেজে ভিডিও ওপেন হবে
                     };
 
                     // ✅ **Thumbnail**
@@ -163,26 +135,6 @@
                 button.disabled = false;
             });
         }
-
-        // ✅ Modal Elements
-        const modal = document.getElementById("videoModal");
-        const videoPlayer = document.getElementById("videoPlayer");
-        const closeModal = document.querySelector(".close");
-
-        // ✅ ভিডিও প্লে করার ফাংশন
-        function openVideoModal(videoUrl) {
-            videoPlayer.src = videoUrl;
-            videoPlayer.style.display = "block"; // ✅ ভিডিও প্লেয়ার দেখানো হবে
-            modal.style.display = "flex"; // ✅ মোডাল দেখানো হবে
-            videoPlayer.play(); // ✅ ভিডিও প্লে শুরু হবে
-        }
-
-        // ✅ শুধুমাত্র ক্লোজ বাটনে ক্লিক করলে Modal বন্ধ হবে
-        closeModal.onclick = function() {
-            modal.style.display = "none";
-            videoPlayer.pause();
-            videoPlayer.src = ""; // ✅ ভিডিও বন্ধ হলে URL রিসেট করুন
-        };
     </script>
 
 </body>
