@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TeraBox Video Downloader</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        h2 {
+            color: white;
+            background: #222;
+            padding: 10px;
+            border-radius: 8px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+        }
+        input {
+            width: 80%;
+            padding: 12px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            padding: 12px 20px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
+            transition: 0.3s;
+            position: relative;
+        }
+        button:hover {
+            background-color: #218838;
+            box-shadow: 3px 3px 15px rgba(0, 0, 0, 0.3);
+        }
+        /* লোডিং স্পিনার */
+        .loading {
+            display: none;
+            margin-left: 20px;
+            width: 20px;
+            height: 20px;
+            border: 3px solid #0044ff;
+            border-top: 3px solid transparent;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            right: -25px;
+        }
+        @keyframes spin {
+            0% { transform: translateY(-50%) rotate(0deg); }
+            100% { transform: translateY(-50%) rotate(360deg); }
+        }
+        #downloadSection {
+            display: none;
+            margin-top: 20px;
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+        }
+        #downloadButton, #watchButton, #thumbButton {
+            display: none;
+            padding: 12px 20px;
+            background-color: #007bff;
+            color: white;
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 5px;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
+            transition: 0.3s;
+            margin: 5px;
+        }
+        #downloadButton:hover, #watchButton:hover, #thumbButton:hover {
+            background-color: #0056b3;
+            box-shadow: 3px 3px 15px rgba(0, 0, 0, 0.3);
+        }
+        .info {
+            font-size: 16px;
+            margin: 5px 0;
+            font-weight: bold;
+            color: #555;
+        }
+        footer {
+            margin-top: 30px;
+            padding: 10px;
+            background: #222;
+            color: white;
+            text-align: center;
+            font-size: 14px;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            left: 0;
+        }
+        /* থাম্বনেইল */
+        #thumbnail {
+            display: none;
+            margin-top: 10px;
+            width: 300px;
+            border-radius: 10px;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.3);
+        }
+    </style>
+</head>
+<body>
+
+    <h2>TeraBox Video Downloader</h2>
+    <input type="text" id="urlInput" placeholder="Enter TeraBox URL">
+    <button onclick="fetchDownloadLink()">
+        Get Download Link 
+        <div class="loading" id="loadingSpinner"></div>
+    </button>
+
+    <div id="downloadSection">
+        <p class="info">📄 Filename: <span id="fileName">Loading...</span></p>
+        <p class="info">📦 File Size: <span id="fileSize">Loading...</span></p>
+        <img id="thumbnail" src="" alt="Video Thumbnail">
+        <br>
+        <a id="downloadButton" target="_blank" download>⬇ Download Video</a>
+        <a id="watchButton" target="_blank">▶ Watch Online</a>
+        <a id="thumbButton" target="_blank" download>📸 Download Thumbnail</a>
+    </div>
+
+    <footer>
+        Developed by <a href="https://t.me/Farooq_is_king" target="_blank" style="color: #ffcc00;">𝐖𝐎𝐎𝐃𝐜𝐫𝐚𝐟𝐭</a>
+    </footer>
+
+    <script>
+        function fetchDownloadLink() {
+            const url = document.getElementById('urlInput').value.trim();
+            if (!url) {
+                alert("Please enter a valid TeraBox URL");
+                return;
+            }
+
+            const button = document.querySelector("button");
+            const spinner = document.getElementById("loadingSpinner");
+
+            // লোডিং স্পিনার দেখানো শুরু
+            spinner.style.display = "inline-block";
+            button.disabled = true;
+
+            fetch(`https://apiteraboxdl.crezybotz.workers.dev/?url=${encodeURIComponent(url)}`)
+            .then(response => response.json())
+            .then(data => {
+                // লোডিং স্পিনার বন্ধ করা
+                spinner.style.display = "none";
+                button.disabled = false;
+
+                if (data.ok && data.downloadLink) {
+                    document.getElementById('fileName').innerText = data.filename || 'Unknown File';
+                    document.getElementById('fileSize').innerText = data.size || 'Unknown Size';
+                    document.getElementById('downloadSection').style.display = 'block';
+
+                    // ডাউনলোড বাটন সেটআপ
+                    const downloadButton = document.getElementById('downloadButton');
+                    downloadButton.style.display = 'inline-block';
+                    downloadButton.href = data.downloadLink;
+                    downloadButton.download = data.filename || 'video.mp4';
+
+                    // Watch Online বাটন সেটআপ
+                    const watchButton = document.getElementById('watchButton');
+                    watchButton.style.display = 'inline-block';
+                    watchButton.href = data.downloadLink;
+
+                    // Thumbnail সেটআপ
+                    const thumbnail = document.getElementById('thumbnail');
+                    thumbnail.src = data.thumbnail;
+                    thumbnail.style.display = 'block';
+
+                    // Thumbnail Download Button
+                    const thumbButton = document.getElementById('thumbButton');
+                    thumbButton.style.display = 'inline-block';
+                    thumbButton.href = data.thumbnail;
+                    thumbButton.download = "thumbnail.jpg";
+                } else {
+                    alert('Download link not available.');
+                }
+            })
+            .catch(error => {
+                console.error('Error fetching download link:', error);
+                alert('Failed to get download link.');
+                spinner.style.display = "none";
+                button.disabled = false;
+            });
+        }
+    </script>
+
+</body>
+</html>
