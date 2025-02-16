@@ -15,8 +15,8 @@
         .logo {
             margin: 20px auto;
             display: block;
-            width: 150px;
-            height: 75px;
+            max-width: 100%;  /* ✅ বড় স্ক্রিনে ফিট হবে */
+            height: auto;     /* ✅ Aspect Ratio ঠিক থাকবে */
         }
         .description {
             font-size: 18px;
@@ -26,7 +26,7 @@
             background: white;
             padding: 10px;
             border-radius: 10px;
-            box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.2);
+            box-shadow: 5px 5px 15px rgba(0, 0, 0);
             display: inline-block;
             margin-bottom: 20px;
         }
