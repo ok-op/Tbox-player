@@ -137,64 +137,73 @@
     </footer>
 
     <script>
-        function fetchDownloadLink() {
-            const url = document.getElementById('urlInput').value.trim();
-            if (!url) {
-                alert("Please enter a valid TeraBox URL");
-                return;
-            }
+    function fetchDownloadLink() {
+        const url = document.getElementById('urlInput').value.trim();
+        if (!url) {
+            alert("Please enter a valid TeraBox URL");
+            return;
+        }
 
-            const button = document.querySelector("button");
-            const spinner = document.getElementById("loadingSpinner");
+        const button = document.querySelector("button");
+        const spinner = document.getElementById("loadingSpinner");
 
-            // লোডিং স্পিনার দেখানো শুরু
-            spinner.style.display = "inline-block";
-            button.disabled = true;
+        // লোডিং স্পিনার দেখানো শুরু
+        spinner.style.display = "inline-block";
+        button.disabled = true;
 
-            fetch(`https://apiteraboxdl.crezybotz.workers.dev/?url=${encodeURIComponent(url)}`)
-            .then(response => response.json())
-            .then(data => {
-                // লোডিং স্পিনার বন্ধ করা
-                spinner.style.display = "none";
-                button.disabled = false;
+        fetch(`https://apiteraboxdl.crezybotz.workers.dev/?url=${encodeURIComponent(url)}`)
+        .then(response => response.json())
+        .then(data => {
+            // লোডিং স্পিনার বন্ধ করা
+            spinner.style.display = "none";
+            button.disabled = false;
 
-                if (data.ok && data.downloadLink) {
-                    document.getElementById('fileName').innerText = data.filename || 'Unknown File';
-                    document.getElementById('fileSize').innerText = data.size || 'Unknown Size';
-                    document.getElementById('downloadSection').style.display = 'block';
+            if (data.ok && data.downloadLink) {
+                document.getElementById('fileName').innerText = data.filename || 'Unknown File';
+                document.getElementById('fileSize').innerText = data.size || 'Unknown Size';
+                document.getElementById('downloadSection').style.display = 'block';
 
-                    // ডাউনলোড বাটন সেটআপ
-                    const downloadButton = document.getElementById('downloadButton');
-                    downloadButton.style.display = 'inline-block';
-                    downloadButton.href = data.downloadLink;
-                    downloadButton.download = data.filename || 'video.mp4';
+                // ✅ **ডাউনলোড বাটন ফিক্স**
+                const downloadButton = document.getElementById('downloadButton');
+                downloadButton.style.display = 'inline-block';
+                downloadButton.href = data.downloadLink;
+                downloadButton.setAttribute("download", data.filename || "video.mp4");
 
-                    // Watch Online বাটন সেটআপ
-                    const watchButton = document.getElementById('watchButton');
-                    watchButton.style.display = 'inline-block';
-                    watchButton.href = data.downloadLink;
+                // ✅ **Watch Online বাটন ফিক্স**
+                const watchButton = document.getElementById('watchButton');
+                watchButton.style.display = 'inline-block';
+                watchButton.href = `https://video-player-page.com?url=${encodeURIComponent(data.downloadLink)}`;  
+                watchButton.removeAttribute("download"); // ডাউনলোড বন্ধ করতে 
 
-                    // Thumbnail সেটআপ
-                    const thumbnail = document.getElementById('thumbnail');
+                // ✅ **Thumbnail সেটআপ**
+                const thumbnail = document.getElementById('thumbnail');
+                if (data.thumbnail) {
                     thumbnail.src = data.thumbnail;
                     thumbnail.style.display = 'block';
+                } else {
+                    thumbnail.style.display = 'none';
+                }
 
-                    // Thumbnail Download Button
-                    const thumbButton = document.getElementById('thumbButton');
+                // ✅ **Thumbnail Download Button ফিক্স**
+                const thumbButton = document.getElementById('thumbButton');
+                if (data.thumbnail) {
                     thumbButton.style.display = 'inline-block';
                     thumbButton.href = data.thumbnail;
-                    thumbButton.download = "thumbnail.jpg";
+                    thumbButton.setAttribute("download", "thumbnail.jpg");
                 } else {
-                    alert('Download link not available.');
+                    thumbButton.style.display = 'none';
                 }
-            })
-            .catch(error => {
-                console.error('Error fetching download link:', error);
-                alert('Failed to get download link.');
-                spinner.style.display = "none";
-                button.disabled = false;
-            });
-        }
+            } else {
+                alert('Download link not available.');
+            }
+        })
+        .catch(error => {
+            console.error('Error fetching download link:', error);
+            alert('Failed to get download link.');
+            spinner.style.display = "none";
+            button.disabled = false;
+        });
+    }
     </script>
 
 </body>
