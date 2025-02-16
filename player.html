@@ -28,9 +28,23 @@
             display: none;
             border-radius: 8px;
         }
+        
+        /* ✅ 3D Loading Spinner */
         #loadingSpinner {
             display: none;
+            margin: 10px auto;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 6px solid transparent;
+            border-top-color: #007bff;
+            animation: spin 1s linear infinite;
         }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
         /* ✅ Fixed Footer (Centered) */
         .footer {
             position: fixed;
@@ -41,8 +55,6 @@
             text-align: center;
             padding: 10px;
             font-size: 14px;
-            left: 0;
-            right: 0;
         }
     </style>
 </head>
@@ -51,7 +63,9 @@
     <h2>TeraBox Video Downloader</h2>
     <input type="text" id="urlInput" placeholder="Enter TeraBox URL">
     <button onclick="fetchDownloadLink()">Get Download Link</button>
-    <span id="loadingSpinner">🔄 Loading...</span>
+    
+    <!-- ✅ 3D Loading Spinner -->
+    <div id="loadingSpinner"></div>
 
     <div id="downloadSection">
         <h3>Download Details</h3>
@@ -70,7 +84,7 @@
         </a>
     </div>
 
-    <!-- ✅ Fixed Footer (Centered) -->
+    <!-- ✅ Fixed Footer -->
     <div class="footer">
         Developer by : WOODcraft
     </div>
@@ -86,14 +100,14 @@
             const button = document.querySelector("button");
             const spinner = document.getElementById("loadingSpinner");
 
-            // ✅ লোডিং স্পিনার দেখানো শুরু
-            spinner.style.display = "inline-block";
+            // ✅ 3D লোডিং স্পিনার চালু
+            spinner.style.display = "block";
             button.disabled = true;
 
             fetch(`https://apiteraboxdl.crezybotz.workers.dev/?url=${encodeURIComponent(url)}`)
             .then(response => response.json())
             .then(data => {
-                // ✅ লোডিং স্পিনার বন্ধ করা
+                // ✅ লোডিং স্পিনার বন্ধ
                 spinner.style.display = "none";
                 button.disabled = false;
 
@@ -108,10 +122,10 @@
                     downloadButton.href = data.downloadLink;
                     downloadButton.setAttribute("download", data.filename || "video.mp4");
 
-                    // ✅ **Watch Online Button (New Tab - No Download)**
+                    // ✅ **Watch Online Button (No Download - Stream Only)**
                     const watchButton = document.getElementById('watchButton');
                     watchButton.style.display = 'inline-block';
-                    watchButton.href = data.downloadLink;
+                    watchButton.href = `https://www.video-streaming.site/player?src=${encodeURIComponent(data.downloadLink)}`;
                     watchButton.setAttribute("target", "_blank");
 
                     // ✅ **Thumbnail**
