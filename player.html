@@ -13,10 +13,11 @@
             background-color: #f4f4f4;
         }
         .logo {
-            margin: 20px auto;
+            margin: 10px auto 0;  /* উপরে 10px গ্যাপ, নিচে 0px */
             display: block;
-            max-width: 100%;  /* ✅ বড় স্ক্রিনে ফিট হবে */
-            height: auto;     /* ✅ Aspect Ratio ঠিক থাকবে */
+            width: 150px;  
+            height: 50px;  /* ✅ Height কমানো হয়েছে */
+            object-fit: contain; /* ✅ ছবির আকৃতি ঠিক রাখবে */
         }
         .description {
             font-size: 18px;
