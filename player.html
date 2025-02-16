@@ -31,7 +31,7 @@
         #loadingSpinner {
             display: none;
         }
-        /* ✅ Fixed Footer */
+        /* ✅ Fixed Footer (Centered) */
         .footer {
             position: fixed;
             bottom: 0;
@@ -41,6 +41,8 @@
             text-align: center;
             padding: 10px;
             font-size: 14px;
+            left: 0;
+            right: 0;
         }
     </style>
 </head>
@@ -60,13 +62,15 @@
         <a id="downloadButton" style="display: none;" download>
             <button>📥 Download</button>
         </a>
-        <button id="watchButton" style="display: none;">▶ Watch Online</button>
+        <a id="watchButton" style="display: none;" target="_blank">
+            <button>▶ Watch Online</button>
+        </a>
         <a id="thumbButton" style="display: none;" download>
             <button>🖼 Download Thumbnail</button>
         </a>
     </div>
 
-    <!-- ✅ Fixed Footer -->
+    <!-- ✅ Fixed Footer (Centered) -->
     <div class="footer">
         Developer by : WOODcraft
     </div>
@@ -104,12 +108,11 @@
                     downloadButton.href = data.downloadLink;
                     downloadButton.setAttribute("download", data.filename || "video.mp4");
 
-                    // ✅ **Watch Online Button (New Tab)**
+                    // ✅ **Watch Online Button (New Tab - No Download)**
                     const watchButton = document.getElementById('watchButton');
                     watchButton.style.display = 'inline-block';
-                    watchButton.onclick = function() {
-                        window.open(data.downloadLink, '_blank'); // ✅ নতুন পেজে ভিডিও ওপেন হবে
-                    };
+                    watchButton.href = data.downloadLink;
+                    watchButton.setAttribute("target", "_blank");
 
                     // ✅ **Thumbnail**
                     const thumbnail = document.getElementById('thumbnail');
