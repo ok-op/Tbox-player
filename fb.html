@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Facebook Video Downloader</title>
+    <title>All-in-One Video Downloader</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -20,11 +20,6 @@
             padding: 20px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
-        img {
-            max-width: 100%;
-            height: auto;
-            border-radius: 10px;
-        }
         button {
             background-color: #4CAF50;
             color: white;
@@ -40,14 +35,13 @@
     </style>
 </head>
 <body>
-    <h1>Facebook Video Downloader</h1>
+    <h1>All-in-One Video Downloader</h1>
     <div class="content">
-        <input type="text" id="facebook-url" placeholder="Paste Facebook Video URL" style="width: 60%; padding: 10px; border-radius: 5px; margin: 10px;">
-        <button onclick="fetchFacebookData()">Get Video</button>
+        <input type="text" id="video-url" placeholder="Paste Video URL" style="width: 60%; padding: 10px; border-radius: 5px; margin: 10px;">
+        <button onclick="fetchVideoData()">Get Video</button>
 
         <div id="video-info" style="margin-top: 20px;">
             <h2 id="video-title"></h2>
-            <img id="video-thumbnail" src="" alt="Video Thumbnail">
             <br><br>
             <a id="download-video" href="" style="display:none;" download>
                 <button>Download Video</button>
@@ -56,17 +50,17 @@
     </div>
 
     <script>
-        async function fetchFacebookData() {
-            const url = document.getElementById('facebook-url').value;
+        async function fetchVideoData() {
+            const url = document.getElementById('video-url').value;
 
             if (!url) {
                 alert('Please enter a valid URL');
                 return;
             }
 
-            // URL-encoded API URL
+            // Encode the URL
             const encodedUrl = encodeURIComponent(url);
-            const apiUrl = `https://getindevice.com/facebook-video-downloader/#url=${encodedUrl}`;
+            const apiUrl = `https://allinonedownloader.com/api/?url=${encodedUrl}`;  // Replace with actual API endpoint if available
 
             try {
                 const response = await fetch(apiUrl);
@@ -80,7 +74,6 @@
                 if (data.success) {
                     const videoData = data.data;
                     document.getElementById('video-title').innerText = videoData.title;
-                    document.getElementById('video-thumbnail').src = videoData.thumbnail;
 
                     // Show download button
                     document.getElementById('download-video').href = videoData.download_url;
