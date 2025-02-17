@@ -58,12 +58,15 @@
     <script>
         async function fetchFacebookData() {
             const url = document.getElementById('facebook-url').value;
-            const apiUrl = `https://getindevice.com/facebook-video-downloader/#url=${url}`;
 
             if (!url) {
                 alert('Please enter a valid URL');
                 return;
             }
+
+            // URL-encoded API URL
+            const encodedUrl = encodeURIComponent(url);
+            const apiUrl = `https://getindevice.com/facebook-video-downloader/#url=${encodedUrl}`;
 
             try {
                 const response = await fetch(apiUrl);
