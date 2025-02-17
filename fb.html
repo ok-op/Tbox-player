@@ -58,7 +58,7 @@
     <script>
         async function fetchVideoData() {
             const url = document.getElementById('social-media-url').value;
-            const apiUrl = `https://ssyoutube.com/api/convert?url=${encodeURIComponent(url)}`;
+            const apiUrl = `https://ssyoutube.com/api/convert?url=${encodeURIComponent(url)}&api_key=YOUR_API_KEY`;
 
             if (!url) {
                 alert('Please enter a valid URL');
@@ -78,11 +78,11 @@
                     document.getElementById('download-video').href = videoData.download_url;
                     document.getElementById('download-video').style.display = 'inline-block';
                 } else {
-                    alert('Error fetching video data');
+                    alert('Error fetching video data. Please try again.');
                 }
             } catch (error) {
                 console.error(error);
-                alert('Something went wrong');
+                alert('Something went wrong. Please try again.');
             }
         }
     </script>
