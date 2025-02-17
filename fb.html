@@ -58,7 +58,7 @@
     <script>
         async function fetchVideoData() {
             const url = document.getElementById('social-media-url').value;
-            const apiUrl = `https://ssyoutube.com/api/convert?url=${encodeURIComponent(url)}&api_key=YOUR_API_KEY`;
+            const apiUrl = `https://api.ssyoutube.com/get_video_info?url=${encodeURIComponent(url)}`;
 
             if (!url) {
                 alert('Please enter a valid URL');
