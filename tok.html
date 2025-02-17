@@ -49,8 +49,12 @@
             <h2 id="video-title"></h2>
             <img id="video-thumbnail" src="" alt="Video Thumbnail">
             <br><br>
-            <button id="download-video" style="display:none;">Download Video</button>
-            <button id="download-music" style="display:none;">Download Music</button>
+            <a id="download-video" href="" style="display:none;" download>
+                <button>Download Video</button>
+            </a>
+            <a id="download-music" href="" style="display:none;" download>
+                <button>Download Music</button>
+            </a>
         </div>
     </div>
 
@@ -73,16 +77,12 @@
                     document.getElementById('video-title').innerText = videoData.title;
                     document.getElementById('video-thumbnail').src = videoData.cover;
 
-                    // Show download buttons
+                    // Set download links for video and music
+                    document.getElementById('download-video').href = videoData.play;
                     document.getElementById('download-video').style.display = 'inline-block';
-                    document.getElementById('download-video').onclick = function() {
-                        window.location.href = videoData.play;
-                    };
 
+                    document.getElementById('download-music').href = videoData.music;
                     document.getElementById('download-music').style.display = 'inline-block';
-                    document.getElementById('download-music').onclick = function() {
-                        window.location.href = videoData.music;
-                    };
                 } else {
                     alert('Error fetching video data');
                 }
