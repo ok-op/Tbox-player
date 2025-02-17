@@ -3,22 +3,57 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>YouTube Video Downloader</title>
+    <title>Video Downloader</title>
     <style>
-        body { font-family: Arial, sans-serif; text-align: center; }
-        input, button { padding: 10px; margin: 10px; }
-        button { background-color: #4CAF50; color: white; }
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f4f4f4;
+            padding: 20px;
+        }
+        h1 {
+            color: #333;
+        }
+        .content {
+            background-color: #fff;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 60%;
+            margin: 0 auto;
+        }
+        input, button {
+            padding: 12px;
+            margin: 10px;
+            width: 80%;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        #download-link {
+            margin-top: 20px;
+        }
     </style>
 </head>
 <body>
-    <h1>YouTube Video Downloader</h1>
-    <input type="text" id="video-url" placeholder="Paste YouTube Video URL">
-    <button onclick="fetchVideoLink()">Get Download Link</button>
 
-    <div id="download-link" style="margin-top: 20px; display: none;">
-        <a id="video-download-url" href="#" target="_blank">
-            <button>Download Video</button>
-        </a>
+    <h1>Video Downloader</h1>
+    <div class="content">
+        <input type="text" id="video-url" placeholder="Paste Video URL" />
+        <button onclick="fetchVideoLink()">Get Download Link</button>
+
+        <div id="download-link" style="display: none;">
+            <a id="video-download-url" href="#" target="_blank">
+                <button>Download Video</button>
+            </a>
+        </div>
     </div>
 
     <script>
@@ -29,13 +64,14 @@
                 return;
             }
 
-            const apiUrl = `https://ssyoutube.com/api?url=${encodeURIComponent(videoUrl)}`;
+            const apiUrl = `https://ssyoutube.com/en8HZ/api?url=${encodeURIComponent(videoUrl)}`;
 
             try {
                 const response = await fetch(apiUrl);
                 const data = await response.json();
 
                 if (data.status === 'success') {
+                    // Show download link
                     document.getElementById('video-download-url').href = data.download_url;
                     document.getElementById('download-link').style.display = 'block';
                 } else {
@@ -47,5 +83,6 @@
             }
         }
     </script>
+
 </body>
 </html>
