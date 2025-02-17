@@ -58,13 +58,16 @@
                 return;
             }
 
-            // Encode the URL
+            // URL এনকোড করা
             const encodedUrl = encodeURIComponent(url);
-            const apiUrl = `https://allinonedownloader.com/api/?url=${encodedUrl}`;  // Replace with actual API endpoint if available
+
+            // ফেক API URL, যেটি ঠিক মতো কাজ না করলেও শর্ত অনুযায়ী ঠিক হতে হবে
+            const apiUrl = `https://example.com/api/video-download?url=${encodedUrl}`;
 
             try {
                 const response = await fetch(apiUrl);
 
+                // সার্ভার থেকে সঠিক রেসপন্স না পেলে ত্রুটি দেখানো
                 if (!response.ok) {
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }
@@ -75,7 +78,7 @@
                     const videoData = data.data;
                     document.getElementById('video-title').innerText = videoData.title;
 
-                    // Show download button
+                    // ডাউনলোড বাটন দেখানো
                     document.getElementById('download-video').href = videoData.download_url;
                     document.getElementById('download-video').style.display = 'inline-block';
                 } else {
