@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Social Media Video Downloader</title>
+    <title>Y2Mate Video Downloader</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -31,9 +31,9 @@
     </style>
 </head>
 <body>
-    <h1>Social Media Video Downloader</h1>
+    <h1>Video Downloader using Y2Mate</h1>
     <input type="text" id="video-url" placeholder="Paste Video URL" style="width: 60%;">
-    <button onclick="getVideoLink()">Get Video</button>
+    <button onclick="getDownloadLink()">Get Video</button>
 
     <div id="download-section" style="display:none; margin-top: 20px;">
         <h2>Video Ready for Download</h2>
@@ -43,15 +43,15 @@
     </div>
 
     <script>
-        function getVideoLink() {
+        function getDownloadLink() {
             const url = document.getElementById('video-url').value;
             if (!url) {
                 alert("Please enter a valid video URL");
                 return;
             }
 
-            // Example: SaveFrom.net link format
-            const downloadUrl = `https://savefrom.net/1-0-0/download?url=${encodeURIComponent(url)}`;
+            // Y2Mate API link
+            const downloadUrl = `https://y2mate.com/en68?url=${encodeURIComponent(url)}`;
 
             document.getElementById('download-link').href = downloadUrl;
             document.getElementById('download-section').style.display = 'block';
