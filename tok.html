@@ -89,20 +89,30 @@
                     if (videoData.no_watermark) {
                         document.getElementById('download-video-nw').href = videoData.no_watermark;
                         document.getElementById('download-video-nw').style.display = 'inline-block';
+                    } else {
+                        document.getElementById('download-video-nw').style.display = 'none';
                     }
+
                     if (videoData.no_watermark_hd) {
                         document.getElementById('download-video-nw-hd').href = videoData.no_watermark_hd;
                         document.getElementById('download-video-nw-hd').style.display = 'inline-block';
+                    } else {
+                        document.getElementById('download-video-nw-hd').style.display = 'none';
                     }
+
                     if (videoData.watermark) {
                         document.getElementById('download-video-wm').href = videoData.watermark;
                         document.getElementById('download-video-wm').style.display = 'inline-block';
+                    } else {
+                        document.getElementById('download-video-wm').style.display = 'none';
                     }
 
                     // Ensure music download link is set
                     if (videoData.music) {
                         document.getElementById('download-music').href = videoData.music;
                         document.getElementById('download-music').style.display = 'inline-block';
+                    } else {
+                        document.getElementById('download-music').style.display = 'none';
                     }
                 } else {
                     alert('Error fetching video data');
