@@ -47,12 +47,23 @@
             if (fileId) {
                 let fileUrl = `https://api.telegram.org/bot${botToken}/getFile?file_id=${fileId}`;
                 let fileResponse = await fetch(fileUrl);
+                if (!fileResponse.ok) {
+                    alert("Error fetching the file.");
+                    return;
+                }
                 let fileData = await fileResponse.json();
-
                 console.log("File Data:", fileData); // ডিবাগ লগ
 
-                // ভিডিও লিঙ্ক সেট করুন
-                document.getElementById("tgVideo").src = `https://api.telegram.org/file/bot${botToken}/${fileData.result.file_path}`;
+                if (fileData.ok && fileData.result) {
+                    // ভিডিও লিঙ্ক সঠিকভাবে সেট করুন
+                    let videoURL = `https://api.telegram.org/file/bot${botToken}/${fileData.result.file_path}`;
+                    console.log("Video URL: ", videoURL); // ভিডিও URL চেক করুন
+                    document.getElementById("tgVideo").src = videoURL;
+                    document.getElementById("tgVideo").load();  // ভিডিওটি পুনরায় লোড করার জন্য
+                    document.getElementById("tgVideo").play();  // ভিডিও প্লে করার জন্য
+                } else {
+                    alert("Error retrieving the file data.");
+                }
             } else {
                 alert("ভিডিও পাওয়া যায়নি।");
             }
