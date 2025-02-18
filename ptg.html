@@ -11,7 +11,15 @@
     <button onclick="loadVideo()">প্লে করুন</button>
 
     <br><br>
+    
+    <!-- ভিডিও প্লেয়ার -->
     <video id="tgVideo" controls width="600"></video>
+
+    <!-- ভিডিও ডিটেলস -->
+    <div id="videoDetails" style="margin-top: 20px;">
+        <p id="fileName"></p>
+        <p id="fileSize"></p>
+    </div>
 
     <script>
         async function loadVideo() {
@@ -58,9 +66,15 @@
                     // ভিডিও লিঙ্ক সঠিকভাবে সেট করুন
                     let videoURL = `https://api.telegram.org/file/bot${botToken}/${fileData.result.file_path}`;
                     console.log("Video URL: ", videoURL); // ভিডিও URL চেক করুন
+
+                    // ভিডিও প্লে করুন
                     document.getElementById("tgVideo").src = videoURL;
                     document.getElementById("tgVideo").load();  // ভিডিওটি পুনরায় লোড করার জন্য
                     document.getElementById("tgVideo").play();  // ভিডিও প্লে করার জন্য
+
+                    // ভিডিও ডিটেলস প্রদর্শন করুন
+                    document.getElementById("fileName").textContent = `ফাইল নাম: ${fileData.result.file_path.split('/').pop()}`;
+                    document.getElementById("fileSize").textContent = `ফাইল সাইজ: ${(fileData.result.file_size / 1024 / 1024).toFixed(2)} MB`;
                 } else {
                     alert("Error retrieving the file data.");
                 }
