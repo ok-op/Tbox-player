@@ -8,9 +8,11 @@
         body {
             font-family: Arial, sans-serif;
             margin: 20px;
+            background-color: #f4f4f9;
+            color: #333;
         }
         h2 {
-            color: #333;
+            color: #007bff;
         }
         input[type="text"] {
             width: 300px;
@@ -18,6 +20,7 @@
             margin-right: 10px;
             border: 1px solid #ccc;
             border-radius: 5px;
+            font-size: 16px;
         }
         button {
             padding: 10px 20px;
@@ -26,6 +29,7 @@
             border: none;
             border-radius: 5px;
             cursor: pointer;
+            font-size: 16px;
         }
         button:hover {
             background-color: #0056b3;
@@ -35,18 +39,46 @@
             width: 100%;
             max-width: 600px;
             height: auto;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        #videoDetails {
+            margin-top: 20px;
+            font-size: 14px;
+            color: #555;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            text-align: center;
+        }
+        .error {
+            color: red;
+            margin-top: 20px;
         }
     </style>
 </head>
 <body>
-    <h2>টেলিগ্রাম ভিডিও প্লে করুন</h2>
-    <input type="text" id="chatLink" placeholder="Telegram চ্যাট লিঙ্ক দিন" value="https://t.me/Opleech_WD/1704">
-    <button onclick="loadVideo()">প্লে করুন</button>
+    <div class="container">
+        <h2>টেলিগ্রাম ভিডিও প্লে করুন</h2>
+        <input type="text" id="chatLink" placeholder="Telegram চ্যাট লিঙ্ক দিন" value="https://t.me/Opleech_WD/1704">
+        <button onclick="loadVideo()">প্লে করুন</button>
 
-    <br><br>
-    
-    <!-- ভিডিও প্লেয়ার -->
-    <video id="tgVideo" controls width="600"></video>
+        <br><br>
+        
+        <!-- ভিডিও প্লেয়ার -->
+        <video id="tgVideo" controls width="600"></video>
+
+        <!-- ভিডিও ডিটেলস -->
+        <div id="videoDetails">
+            <p id="fileName"></p>
+            <p id="fileSize"></p>
+        </div>
+
+        <!-- ত্রুটি মেসেজ -->
+        <div id="errorMessage" class="error"></div>
+    </div>
 
     <script>
         async function loadVideo() {
@@ -54,29 +86,48 @@
             const messageId = chatLink.split('/').pop(); // চ্যাট লিঙ্ক থেকে মেসেজ আইডি বের করা
 
             if (!messageId || isNaN(messageId)) {
-                alert("অবৈধ লিঙ্ক। সঠিক টেলিগ্রাম চ্যাট লিঙ্ক দিন।");
+                showError("অবৈধ লিঙ্ক। সঠিক টেলিগ্রাম চ্যাট লিঙ্ক দিন।");
                 return;
             }
 
             try {
-                // সার্ভার-সাইডে API কল করুন
-                const response = await fetch(`https://tg-stram-api.rehenabibi022.workers.dev/getVideo?messageId=${messageId}`);
+                // API কল করুন
+                const apiUrl = `https://tg-stram-api.rehenabibi022.workers.dev/getVideo?messageId=${messageId}`;
+                const response = await fetch(apiUrl);
+
                 if (!response.ok) {
                     throw new Error("ভিডিও পাওয়া যায়নি।");
                 }
 
                 const data = await response.json();
-                console.log("ভিডিও URL:", data.videoUrl);
+                console.log("API Response:", data);
 
-                // ভিডিও প্লে করুন
-                const videoElement = document.getElementById("tgVideo");
-                videoElement.src = data.videoUrl;
-                videoElement.load();
-                videoElement.play();
+                if (data.videoUrl) {
+                    // ভিডিও প্লে করুন
+                    const videoElement = document.getElementById("tgVideo");
+                    videoElement.src = data.videoUrl;
+                    videoElement.load();
+                    videoElement.play();
+
+                    // ভিডিও ডিটেলস প্রদর্শন করুন
+                    document.getElementById("fileName").textContent = `ফাইল নাম: ${data.videoUrl.split('/').pop()}`;
+                    document.getElementById("fileSize").textContent = `ফাইল সাইজ: ${(data.fileSize / 1024 / 1024).toFixed(2)} MB`;
+                    clearError();
+                } else {
+                    throw new Error("ভিডিও URL পাওয়া যায়নি।");
+                }
             } catch (error) {
                 console.error("ত্রুটি:", error);
-                alert(error.message);
+                showError(error.message);
             }
+        }
+
+        function showError(message) {
+            document.getElementById("errorMessage").textContent = message;
+        }
+
+        function clearError() {
+            document.getElementById("errorMessage").textContent = "";
         }
     </script>
 </body>
