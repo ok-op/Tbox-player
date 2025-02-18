@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Telegram Video Player</title>
+</head>
+<body>
+    <h2>টেলিগ্রাম ভিডিও প্লে করুন</h2>
+    <input type="text" id="file_id" placeholder="file_id দিন">
+    <button onclick="loadVideo()">প্লে করুন</button>
+
+    <br><br>
+    <video id="tgVideo" controls width="600"></video>
+
+    <script>
+        async function loadVideo() {
+            let fileId = document.getElementById("file_id").value;
+            let workerURL = "https://tg-stram.rehenabibi022.workers.dev/?file_id=" + fileId;
+            
+            let response = await fetch(workerURL);
+            let videoURL = await response.text();
+
+            document.getElementById("tgVideo").src = videoURL;
+        }
+    </script>
+</body>
+</html>
