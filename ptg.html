@@ -20,21 +20,17 @@
 
             let botToken = "6781957967:AAElQ4S2nXj6oqo4bXr4kqkI3sP4X3PSKVQ";  // আপনার Bot Token এখানে দিন
 
-            // Telegram API কল করুন Updates পেতে
-            let apiURL = `https://api.telegram.org/bot${botToken}/getUpdates`;
+            // Telegram API কল করুন getChatHistory পেতে
+            let apiURL = `https://api.telegram.org/bot${botToken}/getChat?chat_id=${messageId}`;
             let response = await fetch(apiURL);
             let data = await response.json();
-
+            
             let fileId = "";  // ফাইল আইডি
 
             // চ্যাটের ফাইল আইডি খুঁজে বের করুন
-            data.result.forEach(update => {
-                if (update.message.message_id === parseInt(messageId)) {
-                    if (update.message.video) {
-                        fileId = update.message.video.file_id;
-                    }
-                }
-            });
+            if (data.result && data.result.video) {
+                fileId = data.result.video.file_id;
+            }
 
             if (fileId) {
                 let fileUrl = `https://api.telegram.org/bot${botToken}/getFile?file_id=${fileId}`;
