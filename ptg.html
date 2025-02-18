@@ -8,9 +8,20 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            margin: 20px;
+            margin: 0;
+            padding: 0;
             background-color: #f4f4f9;
             color: #333;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 800px;
+            margin: auto;
+            padding: 20px;
+            text-align: center;
+            flex: 1;
         }
         h2 {
             color: #007bff;
@@ -48,35 +59,34 @@
             font-size: 14px;
             color: #555;
         }
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 20px;
-            text-align: center;
-        }
         .error {
             color: red;
             margin-top: 20px;
         }
 
+        /* ফুটার সিএসএস */
         .footer {
-	    text-align: center;
-	    align-items: center;
-	    position: absolute; 	
-            left: 0;
-            bottom: 0;
+            background-color: #222;
             color: white;
-            cursor: pointer;
-            background-color: hsl(0, 0%, 20%); 
-	    text-decoration: none;	
-		font-size: 12px;
-            border-radius:5px;
+            text-align: center;
+            padding: 10px 0;
+            position: fixed;
             width: 100%;
-            margin-left: auto;
-            margin-right: auto;
-	    border: 2px solid green;
-            box-shadow: 3px 6px DeepPink;
-            border-top-color: DarkMagenta;
+            bottom: 0;
+            left: 0;
+        }
+        .footer a {
+            color: #ffcc00;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .footer a:hover {
+            text-decoration: underline;
+        }
+        .footer__copyright {
+            font-size: 12px;
+            margin-top: 5px;
+            color: #bbb;
         }
     </style>
 </head>
@@ -103,8 +113,8 @@
 
     <script>
         async function loadVideo() {
-            const chatLink = document.getElementById("chatLink").value; // চ্যাট লিঙ্ক
-            const messageId = chatLink.split('/').pop(); // চ্যাট লিঙ্ক থেকে মেসেজ আইডি বের করা
+            const chatLink = document.getElementById("chatLink").value;
+            const messageId = chatLink.split('/').pop();
 
             if (!messageId || isNaN(messageId)) {
                 showError("অবৈধ লিঙ্ক। সঠিক টেলিগ্রাম চ্যাট লিঙ্ক দিন।");
@@ -112,7 +122,6 @@
             }
 
             try {
-                // API কল করুন
                 const apiUrl = `https://tg-stram-api.rehenabibi022.workers.dev/getVideo?messageId=${messageId}`;
                 const response = await fetch(apiUrl);
 
@@ -124,13 +133,11 @@
                 console.log("API Response:", data);
 
                 if (data.videoUrl) {
-                    // ভিডিও প্লে করুন
                     const videoElement = document.getElementById("tgVideo");
                     videoElement.src = data.videoUrl;
                     videoElement.load();
                     videoElement.play();
 
-                    // ভিডিও ডিটেলস প্রদর্শন করুন
                     document.getElementById("fileName").textContent = `ফাইল নাম: ${data.videoUrl.split('/').pop()}`;
                     document.getElementById("fileSize").textContent = `ফাইল সাইজ: ${(data.fileSize / 1024 / 1024).toFixed(2)} MB`;
                     clearError();
@@ -152,13 +159,12 @@
         }
     </script>
 
-    <footer class="bg-blue-500 font-bold text-white text-center py-3 mt-5">
-    Powered By <a href="https://t.me/Opleech_WD" target="_blank" class="underline">✉️ 𝐖𝐎𝐎𝐃𝐜𝐫𝐚𝐟𝐭</a>
-    <div class="footer__copyright">
-        <p class="footer__copyright-info">
-            © 2024 Video strumming and file details. All rights reserved.
-        </p>
-    </div>
+    <!-- ফুটার -->
+    <footer class="footer">
+        Powered By <a href="https://t.me/Opleech_WD" target="_blank">✉️ 𝐖𝐎𝐎𝐃𝐜𝐫𝐚𝐟𝐭</a>
+        <div class="footer__copyright">
+            © 2024 Video Streaming and File Details. All rights reserved.
+        </div>
     </footer>
     
 </body>
