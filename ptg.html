@@ -4,6 +4,42 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Telegram Video Player</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        h2 {
+            color: #333;
+        }
+        input[type="text"] {
+            width: 300px;
+            padding: 10px;
+            margin-right: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        video {
+            margin-top: 20px;
+            width: 100%;
+            max-width: 600px;
+            height: auto;
+        }
+        #videoDetails {
+            margin-top: 20px;
+        }
+    </style>
 </head>
 <body>
     <h2>টেলিগ্রাম ভিডিও প্লে করুন</h2>
@@ -22,64 +58,64 @@
     </div>
 
     <script>
+        const botToken = "YOUR_BOT_TOKEN"; // এখানে আপনার বট টোকেন দিন
+
         async function loadVideo() {
-            let chatLink = document.getElementById("chatLink").value; // চ্যাট লিঙ্ক
-            let messageId = chatLink.split('/').pop(); // চ্যাট লিঙ্ক থেকে মেসেজ আইডি বের করা
-            console.log("Message ID:", messageId); // ডিবাগ লগ
+            const chatLink = document.getElementById("chatLink").value; // চ্যাট লিঙ্ক
+            const messageId = chatLink.split('/').pop(); // চ্যাট লিঙ্ক থেকে মেসেজ আইডি বের করা
 
-            let botToken = "6781957967:AAElQ4S2nXj6oqo4bXr4kqkI3sP4X3PSKVQ";  // আপনার Bot Token এখানে দিন
-
-            // Telegram API কল করুন Updates পেতে
-            let apiURL = `https://api.telegram.org/bot${botToken}/getUpdates`;
-            let response = await fetch(apiURL);
-            if (!response.ok) {
-                alert("Error fetching updates");
+            if (!messageId || isNaN(messageId)) {
+                alert("অবৈধ লিঙ্ক। সঠিক টেলিগ্রাম চ্যাট লিঙ্ক দিন।");
                 return;
             }
-            let data = await response.json();
-            console.log(data); // ডিবাগ লগ
 
-            let fileId = "";  // ফাইল আইডি
+            try {
+                // Telegram API কল করুন মেসেজ তথ্য পেতে
+                const apiURL = `https://api.telegram.org/bot${botToken}/getChat?chat_id=${messageId}`;
+                const response = await fetch(apiURL);
+                if (!response.ok) {
+                    throw new Error("মেসেজ তথ্য পাওয়া যায়নি।");
+                }
 
-            // চ্যাটের ফাইল আইডি খুঁজে বের করুন
-            data.result.forEach(update => {
-                if (update.message.message_id === parseInt(messageId)) {
-                    if (update.message.video) {
-                        fileId = update.message.video.file_id;
+                const data = await response.json();
+                console.log("মেসেজ তথ্য:", data);
+
+                if (data.ok && data.result.video) {
+                    const fileId = data.result.video.file_id;
+
+                    // ফাইল তথ্য পেতে API কল করুন
+                    const fileUrl = `https://api.telegram.org/bot${botToken}/getFile?file_id=${fileId}`;
+                    const fileResponse = await fetch(fileUrl);
+                    if (!fileResponse.ok) {
+                        throw new Error("ফাইল তথ্য পাওয়া যায়নি।");
                     }
-                }
-            });
 
-            console.log("File ID:", fileId); // ডিবাগ লগ
+                    const fileData = await fileResponse.json();
+                    console.log("ফাইল তথ্য:", fileData);
 
-            if (fileId) {
-                let fileUrl = `https://api.telegram.org/bot${botToken}/getFile?file_id=${fileId}`;
-                let fileResponse = await fetch(fileUrl);
-                if (!fileResponse.ok) {
-                    alert("Error fetching the file.");
-                    return;
-                }
-                let fileData = await fileResponse.json();
-                console.log("File Data:", fileData); // ডিবাগ লগ
+                    if (fileData.ok && fileData.result) {
+                        // ভিডিও লিঙ্ক তৈরি করুন
+                        const videoURL = `https://api.telegram.org/file/bot${botToken}/${fileData.result.file_path}`;
+                        console.log("ভিডিও URL:", videoURL);
 
-                if (fileData.ok && fileData.result) {
-                    // ভিডিও লিঙ্ক সঠিকভাবে সেট করুন
-                    let videoURL = `https://api.telegram.org/file/bot${botToken}/${fileData.result.file_path}`;
-                    console.log("Video URL: ", videoURL); // ভিডিও URL চেক করুন
+                        // ভিডিও প্লে করুন
+                        const videoElement = document.getElementById("tgVideo");
+                        videoElement.src = videoURL;
+                        videoElement.load();
+                        videoElement.play();
 
-                    // ভিডিও প্লে করুন
-                    document.getElementById("tgVideo").src = videoURL;
-                    document.getElementById("tgVideo").load();  // ভিডিওটি পুনরায় লোড করার জন্য
-                    document.getElementById("tgVideo").play();  // ভিডিও প্লে করার জন্য
-
-                    // ভিডিও ডিটেলস প্রদর্শন করুন
-                    document.getElementById("fileName").textContent = `ফাইল নাম: ${fileData.result.file_path.split('/').pop()}`;
-                    document.getElementById("fileSize").textContent = `ফাইল সাইজ: ${(fileData.result.file_size / 1024 / 1024).toFixed(2)} MB`;
+                        // ভিডিও ডিটেলস প্রদর্শন করুন
+                        document.getElementById("fileName").textContent = `ফাইল নাম: ${fileData.result.file_path.split('/').pop()}`;
+                        document.getElementById("fileSize").textContent = `ফাইল সাইজ: ${(fileData.result.file_size / 1024 / 1024).toFixed(2)} MB`;
+                    } else {
+                        throw new Error("ফাইল তথ্য পাওয়া যায়নি।");
+                    }
                 } else {
-                    alert("Error retrieving the file data.");
+                    throw new Error("এই মেসেজে কোনো ভিডিও নেই।");
                 }
-            } else {
-                alert("ভিডিও পাওয়া যায়নি।");
+            } catch (error) {
+                console.error("ত্রুটি:", error);
+                alert(error.message);
             }
         }
     </script>
