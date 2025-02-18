@@ -17,13 +17,19 @@
         async function loadVideo() {
             let chatLink = document.getElementById("chatLink").value; // চ্যাট লিঙ্ক
             let messageId = chatLink.split('/').pop(); // চ্যাট লিঙ্ক থেকে মেসেজ আইডি বের করা
+            console.log("Message ID:", messageId); // ডিবাগ লগ
 
             let botToken = "6781957967:AAElQ4S2nXj6oqo4bXr4kqkI3sP4X3PSKVQ";  // আপনার Bot Token এখানে দিন
 
             // Telegram API কল করুন Updates পেতে
             let apiURL = `https://api.telegram.org/bot${botToken}/getUpdates`;
             let response = await fetch(apiURL);
+            if (!response.ok) {
+                alert("Error fetching updates");
+                return;
+            }
             let data = await response.json();
+            console.log(data); // ডিবাগ লগ
 
             let fileId = "";  // ফাইল আইডি
 
@@ -36,10 +42,14 @@
                 }
             });
 
+            console.log("File ID:", fileId); // ডিবাগ লগ
+
             if (fileId) {
                 let fileUrl = `https://api.telegram.org/bot${botToken}/getFile?file_id=${fileId}`;
                 let fileResponse = await fetch(fileUrl);
                 let fileData = await fileResponse.json();
+
+                console.log("File Data:", fileData); // ডিবাগ লগ
 
                 // ভিডিও লিঙ্ক সেট করুন
                 document.getElementById("tgVideo").src = `https://api.telegram.org/file/bot${botToken}/${fileData.result.file_path}`;
