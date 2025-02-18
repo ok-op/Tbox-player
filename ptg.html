@@ -7,7 +7,7 @@
 </head>
 <body>
     <h2>টেলিগ্রাম ভিডিও প্লে করুন</h2>
-    <input type="text" id="file_id" placeholder="file_id দিন">
+    <input type="text" id="chatLink" placeholder="Telegram চ্যাট লিঙ্ক দিন">
     <button onclick="loadVideo()">প্লে করুন</button>
 
     <br><br>
@@ -15,20 +15,36 @@
 
     <script>
         async function loadVideo() {
-            let fileId = document.getElementById("file_id").value;
-            let workerURL = "https://tg-stram.rehenabibi022.workers.dev/?file_id=" + fileId;
-            
-            try {
-                let response = await fetch(workerURL);
-                if (response.ok) {
-                    let videoURL = await response.text();
-                    document.getElementById("tgVideo").src = videoURL;
-                } else {
-                    alert("ভিডিও লোড করা সম্ভব হয়নি।");
+            let chatLink = document.getElementById("chatLink").value; // চ্যাট লিঙ্ক
+            let messageId = chatLink.split('/').pop(); // চ্যাট লিঙ্ক থেকে মেসেজ আইডি বের করা
+
+            let botToken = "<YourBotToken>";  // আপনার Bot Token এখানে দিন
+
+            // Telegram API কল করুন Updates পেতে
+            let apiURL = `https://api.telegram.org/bot${botToken}/getUpdates`;
+            let response = await fetch(apiURL);
+            let data = await response.json();
+
+            let fileId = "";  // ফাইল আইডি
+
+            // চ্যাটের ফাইল আইডি খুঁজে বের করুন
+            data.result.forEach(update => {
+                if (update.message.message_id === parseInt(messageId)) {
+                    if (update.message.video) {
+                        fileId = update.message.video.file_id;
+                    }
                 }
-            } catch (error) {
-                console.error("Error loading video:", error);
-                alert("ভিডিও লোড করার সময় ত্রুটি হয়েছে।");
+            });
+
+            if (fileId) {
+                let fileUrl = `https://api.telegram.org/bot${botToken}/getFile?file_id=${fileId}`;
+                let fileResponse = await fetch(fileUrl);
+                let fileData = await fileResponse.json();
+
+                // ভিডিও লিঙ্ক সেট করুন
+                document.getElementById("tgVideo").src = `https://api.telegram.org/file/bot${botToken}/${fileData.result.file_path}`;
+            } else {
+                alert("ভিডিও পাওয়া যায়নি।");
             }
         }
     </script>
