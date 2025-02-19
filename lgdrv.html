@@ -1,0 +1,162 @@
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="/assets/gdrive.png">
+    <title>Gdrive for Windows</title>
+    <link href="https://fonts.googleapis.com/css2?family=Arial+Condensed&amp;display=swap" rel="stylesheet">
+    <style>
+        /* Existing CSS styles */
+        .link-generate {
+            font-family: 'Roboto Condensed', sans-serif;
+        }
+        .title {
+            font-size: 1.6em;
+            color: gray;
+            margin: 15px 0 10px;
+        }
+        .sub {
+            font-size: 0.5em;
+            color: white;
+            vertical-align: middle;
+        }
+        #button, #share-button, #download-button {
+            display: block;
+            transition-duration: 0.2s;
+            font-family: 'Roboto Condensed', sans-serif;
+            font-size: 1.2em;
+            padding: 10px 18px;
+            margin: 15px auto;
+            border-style: none;
+            border-radius: 100px;
+            background: linear-gradient(90deg, #ff8200, #ff8200, #000000, #000000);
+            color: white;
+            cursor: pointer;
+            box-shadow: 0 1px 2px 0px black;
+        }
+        #button:hover, #share-button:hover, #download-button:hover {
+            background: black;
+            color: white;
+        }
+        #input, #output {
+            font-size: 1.1em;
+            display: block;
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #b5b5b5;
+            border-radius: 3px;
+        }
+        #help-text {
+            font-weight: 600;
+            margin: 10px;
+        }
+        p {
+            color: white;
+        }
+        .ad {
+            background-color: #333;
+            border-style: none;
+            color: white;
+        }
+        .ad2 {
+            background-color: red;
+            border-style: none;
+            color: white;
+        }
+        a {
+            color: orange;
+            transition-duration: 0.0s;
+        }
+        a:hover {
+            color: white;
+            text-decoration: none;
+        }
+        span {
+            color: white;
+        }
+    </style>
+</head>
+<body style="background-color: black;">
+    <div class="link-generate">
+        <div class="title">Enter URL:&nbsp;<span class="sub"></span></div>
+        <input style="background-color:black;color:white;" id="input" type="text">
+        <button id="button">GENERATE DOWNLOAD</button>
+        <div class="title">Download link:</div>
+        <input style="background-color:black;color:orange;" id="output" type="text" readonly="" disabled="">
+        <div id="help-text"></div>
+        <!-- Share and Download Buttons -->
+        <button id="share-button" style="display: none;">SHARE LINK</button>
+        <button id="download-button" style="display: none;">DOWNLOAD FILE</button>
+        <a href="https://tinyurl.com/mayoonaise/">LOOKING FOR SOMETHING?</a>
+        <span>|</span>
+        <a href="https://sites.google.com/view/mayonaise/browse/gdrive">DOWNLOAD</a>
+    </div>
+    <p>To create a link firstly go to your google drive file &gt; Share &gt; Anyone with the link &gt; Copy Link &gt; Paste in sharing Url &gt; Create Link</p>
+    <hr>
+    <script>
+        window.onload = setup;
+
+        function setup() {
+            document.getElementById("button").addEventListener("click", go);
+            document.getElementById("output").addEventListener("click", copy);
+            document.getElementById("share-button").addEventListener("click", shareLink);
+            document.getElementById("download-button").addEventListener("click", downloadFile);
+        }
+
+        function setStatus(status, error = false) {
+            var helpText = document.getElementById("help-text");
+            helpText.innerText = status;
+            helpText.style.color = error ? "orange" : "orange";
+        }
+
+        function go() {
+            var linkId = document.getElementById("input").value;
+            var idExtractor = /\/d\/(.+?)(?:\/|#|\?|$)/;
+            var result = idExtractor.exec(linkId);
+            var outputBox = document.getElementById("output");
+
+            if (!result) {
+                outputBox.value = "";
+                setStatus("Error: Invalid URL", true);
+                outputBox.disabled = true;
+                document.getElementById("share-button").style.display = "none";
+                document.getElementById("download-button").style.display = "none";
+                return;
+            }
+
+            var finalLink = "https://drive.google.com/uc?export=download&id=" + result[1];
+            outputBox.disabled = false;
+            outputBox.value = finalLink;
+            setStatus("Success! Click the output link to copy it to your clipboard");
+
+            // Show Share and Download Buttons
+            document.getElementById("share-button").style.display = "block";
+            document.getElementById("download-button").style.display = "block";
+        }
+
+        function copy() {
+            if (this.disabled) return;
+            this.select();
+            var copied = document.execCommand("copy");
+            setStatus(copied ? "Link copied to clipboard!" : "Couldn't copy link. Please copy it manually.", !copied);
+        }
+
+        function shareLink() {
+            var link = document.getElementById("output").value;
+            if (link) {
+                navigator.clipboard.writeText(link).then(() => {
+                    setStatus("Link copied to clipboard!");
+                }).catch(() => {
+                    setStatus("Failed to copy link. Please copy it manually.", true);
+                });
+            }
+        }
+
+        function downloadFile() {
+            var link = document.getElementById("output").value;
+            if (link) {
+                window.open(link, "_blank");
+            }
+        }
+    </script>
+</body>
+</html>
