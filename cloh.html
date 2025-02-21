@@ -83,23 +83,31 @@
         <!-- Dynamic form fields will be injected here -->
         <p class="text-center text-gray-400">Loading values...</p>
       </div>
-      <button id="generateButton" class="mt-6 w-full bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-md transition duration-200">
-        <i class="fa fa-pencil-square-o" aria-hidden="true"></i> Generate Code
+      
+      <!-- Generate Code Button -->
+      <button id="generateButton" class="mt-6 w-full bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-md transition duration-200 flex items-center justify-center">
+        <i class="fa fa-code mr-2"></i> Generate Code
       </button>
+      
       <div id="codeSection" class="mt-8 hidden">
         <div class="flex justify-between items-center mb-4">
-          <h2 class="text-xs font-semibold"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Generated Code <i class="fa fa-pencil-square-o" aria-hidden="true"></i></h2>
-          <button id="copyButton" class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-md transition duration-200 flex items-center">
-            <span><i class="fa fa-clone" aria-hidden="true"></i> Copy Code</span>
-            <svg id="copyIcon" class="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
-            </svg>
+          <h2 class="text-xs font-semibold flex items-center">
+            <i class="fa fa-code mr-1"></i> Generated Code <i class="fa fa-code ml-1"></i>
+          </h2>
+
+          <!-- Smaller Copy Button -->
+          <button id="copyButton" class="bg-indigo-600 hover:bg-indigo-700 text-white px-3 py-1 rounded-md transition duration-200 flex items-center text-xs">
+            <i class="fa fa-clone mr-1"></i> Copy
           </button>
         </div>
-        <pre id="generatedCode" class="bg-gray-900 p-4 rounded-md text-sm font-mono overflow-x-auto"><code class="language-javascript">Loading code...</code></pre>
+
+        <pre id="generatedCode" class="bg-gray-900 p-4 rounded-md text-sm font-mono overflow-x-auto">
+          <code class="language-javascript">Loading code...</code>
+        </pre>
       </div>
     </div>
   </div>
+</body>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
   <script>
