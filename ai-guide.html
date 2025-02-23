@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cloudflare Workers ডিপ্লয় গাইড</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f4f4;
+            padding: 20px;
+            color: #333;
+        }
+        h1, h2 {
+            text-align: center;
+            color: #007bff;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            background: white;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+        code {
+            display: block;
+            background: #282c34;
+            color: #61dafb;
+            padding: 10px;
+            border-radius: 5px;
+            white-space: pre-wrap;
+        }
+        button {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            margin-top: 10px;
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+        .highlight {
+            color: #ff4500;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>🚀 Cloudflare Workers ডিপ্লয় গাইড</h1>
+        
+        <h2>📌 ধাপ ১: Cloudflare Workers লগইন করুন</h2>
+        <p><a href="https://workers.cloudflare.com/" target="_blank">Cloudflare Workers</a> এ যান এবং লগইন করুন।</p>
+
+        <h2>📌 ধাপ ২: নতুন Worker তৈরি করুন</h2>
+        <p>Cloudflare Workers ড্যাশবোর্ডে <b>"Create a Service"</b> বাটনে ক্লিক করুন।</p>
+
+        <h2>📌 ধাপ ৩: নিচের কোড কপি করুন এবং Worker এ পেস্ট করুন</h2>
+        <code id="worker-code">
+// worker.js কোড
+export default {
+  async fetch(request, env) {
+    const url = new URL(request.url);
+    
+    // ✅ সমস্ত মডেল লিস্ট
+    const models = {
+      "realistic_vision": "SG161222/Realistic_Vision_V5.1_noVAE",
+      "dreamshaper": "Lykon/DreamShaper-v7",
+      "sdxl": "stabilityai/stable-diffusion-xl-base-1.0",
+      "deliberate": "XpucT/Deliberate",
+      "anything_v5": "stabilityai/stable-diffusion-2-1",
+      "protogen": "darkstorm2150/Protogen_x5.8",
+      "flux": "black-forest-labs/FLUX.1-dev"  // ✅ নতুন মডেল যুক্ত করা হলো
+    };
+
+    // ✅ যদি model=list হয়, মডেল লিস্ট দেখাবে
+    if (url.searchParams.get("model") === "list") {
+      return new Response(JSON.stringify(models, null, 2), {
+        headers: { "Content-Type": "application/json", "Access-Control-Allow-Origin": "*" }
+      });
+    }
+
+    let modelKey = url.searchParams.get('model') || Object.keys(models)[Math.floor(Math.random() * Object.keys(models).length)];
+    let model = models[modelKey] || models["realistic_vision"];
+    
+    const prompt = url.searchParams.get('input') || 'A futuristic city at sunset';
+    const width = parseInt(url.searchParams.get('width')) || 1024;
+    const height = parseInt(url.searchParams.get('height')) || 1024;
+    const guidance_scale = parseFloat(url.searchParams.get('scale')) || 10;
+
+    if (!env.HUGGINGFACE_TOKEN) {
+      return new Response(JSON.stringify({ error: "Missing Hugging Face API token" }), {
+        status: 401,
+        headers: { "Content-Type": "application/json", "Access-Control-Allow-Origin": "*" }
+      });
+    }
+
+    const requestBody = {
+      inputs: prompt,
+      parameters: { width: width, height: height, guidance_scale: guidance_scale }
+    };
+
+    try {
+      const response = await fetch(`https://api-inference.huggingface.co/models/${model}`, {
+        method: "POST",
+        headers: { "Authorization": `Bearer ${env.HUGGINGFACE_TOKEN}`, "Content-Type": "application/json" },
+        body: JSON.stringify(requestBody)
+      });
+
+      if (!response.ok) {
+        const errorResponse = await response.json();
+        return new Response(JSON.stringify({ error: "Failed to fetch from Hugging Face API", details: errorResponse }), {
+          status: response.status,
+          headers: { "Content-Type": "application/json", "Access-Control-Allow-Origin": "*" }
+        });
+      }
+
+      const imageBuffer = await response.arrayBuffer();
+      return new Response(imageBuffer, {
+        headers: {
+          "Content-Type": "image/png",
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Methods": "GET, HEAD, OPTIONS"
+        }
+      });
+
+    } catch (error) {
+      return new Response(JSON.stringify({ error: "Internal Server Error", details: error.message }), {
+        status: 500,
+        headers: { "Content-Type": "application/json", "Access-Control-Allow-Origin": "*" }
+      });
+    }
+  }
+};
+        </code>
+        <button onclick="copyToClipboard('worker-code')">📋 কোড কপি করুন</button>
+
+        <h2>📌 ধাপ ৪: Worker সংরক্ষণ করুন এবং Deploy করুন</h2>
+        <p>Save করুন এবং "Deploy" বাটনে ক্লিক করুন।</p>
+
+        <h2>📌 ধাপ ৫: API URL ব্যবহার করুন</h2>
+        <p>আপনার Worker এর URL থেকে API কল করতে পারেন। উদাহরণ:</p>
+        <code>https://your-worker-name.YOUR_SUBDOMAIN.workers.dev/?input=Sunset&model=dreamshaper</code>
+
+        <h2>🎉 আপনার API এখন প্রস্তুত!</h2>
+        <p>আপনার AI Image Generator এখন Cloudflare Workers-এ লাইভ! 🚀</p>
+    </div>
+
+    <script>
+        function copyToClipboard(elementId) {
+            var text = document.getElementById(elementId).innerText;
+            navigator.clipboard.writeText(text).then(() => {
+                alert("কোড সফলভাবে কপি হয়েছে!");
+            });
+        }
+    </script>
+
+</body>
+             </html>
