@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="bn">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cloudflare Workers ডিপ্লয় গাইড</title>
+    <title>Cloudflare Workers Deployment Guide</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -55,47 +55,22 @@
 <body>
 
     <div class="container">
-        <h1>🚀 Cloudflare Workers ডিপ্লয় গাইড</h1>
+        <h1>🚀 Cloudflare Workers Deployment Guide</h1>
 
-        <h2>📌 Step 6: Set Up Hugging Face API Token</h2>
-        <p>
-            To use this API, you need a <b>Hugging Face API Token</b>. Follow these steps:
-        </p>
-        <ol>
-            <li>Go to <a href="https://huggingface.co/settings/tokens" target="_blank">Hugging Face API Tokens</a></li>
-            <li>Log in or create an account</li>
-            <li>Click "New token" and create a token with <b>read access</b></li>
-            <li>Copy the token</li>
-        </ol>
+        <h2>📌 Step 1: Log in to Cloudflare Workers</h2>
+        <p>Go to <a href="https://workers.cloudflare.com/" target="_blank">Cloudflare Workers</a> and log in to your account.</p>
 
-        <h3>📌 How to Add the API Token in Cloudflare Workers</h3>
-        <p>Once you have the Hugging Face token, follow these steps:</p>
-        <ol>
-            <li>Open your Cloudflare Worker dashboard</li>
-            <li>Go to your deployed Worker</li>
-            <li>Click on <b>Variables</b> (Environment Variables)</li>
-            <li>Add a new variable:
-                <code>HUGGINGFACE_TOKEN = your_api_token_here</code>
-            </li>
-            <li>Click "Save and Deploy"</li>
-        </ol>
+        <h2>📌 Step 2: Create a New Worker</h2>
+        <p>In the Cloudflare Workers dashboard, click on <b>"Create a Service"</b> to create a new worker.</p>
 
-        <h3>✅ Now your API is ready to generate AI images!</h3>
-        
-        <h2>📌 ধাপ ১: Cloudflare Workers লগইন করুন</h2>
-        <p><a href="https://workers.cloudflare.com/" target="_blank">Cloudflare Workers</a> এ যান এবং লগইন করুন।</p>
-
-        <h2>📌 ধাপ ২: নতুন Worker তৈরি করুন</h2>
-        <p>Cloudflare Workers ড্যাশবোর্ডে <b>"Create a Service"</b> বাটনে ক্লিক করুন।</p>
-
-        <h2>📌 ধাপ ৩: নিচের কোড কপি করুন এবং Worker এ পেস্ট করুন</h2>
+        <h2>📌 Step 3: Copy and Paste the Code into the Worker</h2>
         <code id="worker-code">
-// worker.js কোড
+// worker.js - Cloudflare Worker Script
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
     
-    // ✅ সমস্ত মডেল লিস্ট
+    // ✅ List of available models
     const models = {
       "realistic_vision": "SG161222/Realistic_Vision_V5.1_noVAE",
       "dreamshaper": "Lykon/DreamShaper-v7",
@@ -103,10 +78,10 @@ export default {
       "deliberate": "XpucT/Deliberate",
       "anything_v5": "stabilityai/stable-diffusion-2-1",
       "protogen": "darkstorm2150/Protogen_x5.8",
-      "flux": "black-forest-labs/FLUX.1-dev"  // ✅ নতুন মডেল যুক্ত করা হলো
+      "flux": "black-forest-labs/FLUX.1-dev"  // ✅ Newly added model
     };
 
-    // ✅ যদি model=list হয়, মডেল লিস্ট দেখাবে
+    // ✅ Show model list if model=list
     if (url.searchParams.get("model") === "list") {
       return new Response(JSON.stringify(models, null, 2), {
         headers: { "Content-Type": "application/json", "Access-Control-Allow-Origin": "*" }
@@ -166,27 +141,50 @@ export default {
   }
 };
         </code>
-        <button onclick="copyToClipboard('worker-code')">📋 কোড কপি করুন</button>
+        <button onclick="copyToClipboard('worker-code')">📋 Copy Code</button>
 
-        <h2>📌 ধাপ ৪: Worker সংরক্ষণ করুন এবং Deploy করুন</h2>
-        <p>Save করুন এবং "Deploy" বাটনে ক্লিক করুন।</p>
+        <h2>📌 Step 4: Save and Deploy the Worker</h2>
+        <p>Click "Save" and then "Deploy" to make your worker live.</p>
 
-        <h2>📌 ধাপ ৫: API URL ব্যবহার করুন</h2>
-        <p>আপনার Worker এর URL থেকে API কল করতে পারেন। উদাহরণ:</p>
+        <h2>📌 Step 5: Use the API URL</h2>
+        <p>You can now use the Worker URL to make API calls. Example:</p>
         <code>https://your-worker-name.YOUR_SUBDOMAIN.workers.dev/?input=Sunset&model=dreamshaper</code>
 
-        <h2>🎉 আপনার API এখন প্রস্তুত!</h2>
-        <p>আপনার AI Image Generator এখন Cloudflare Workers-এ লাইভ! 🚀</p>
+        <h2>📌 Step 6: Set Up Hugging Face API Token</h2>
+        <p>
+            To use this API, you need a <b>Hugging Face API Token</b>. Follow these steps:
+        </p>
+        <ol>
+            <li>Go to <a href="https://huggingface.co/settings/tokens" target="_blank">Hugging Face API Tokens</a></li>
+            <li>Log in or create an account</li>
+            <li>Click "New token" and create a token with <b>read access</b></li>
+            <li>Copy the token</li>
+        </ol>
+
+        <h3>📌 How to Add the API Token in Cloudflare Workers</h3>
+        <p>Once you have the Hugging Face token, follow these steps:</p>
+        <ol>
+            <li>Open your Cloudflare Worker dashboard</li>
+            <li>Go to your deployed Worker</li>
+            <li>Click on <b>Variables</b> (Environment Variables)</li>
+            <li>Add a new variable:
+                <code>HUGGINGFACE_TOKEN = your_api_token_here</code>
+            </li>
+            <li>Click "Save and Deploy"</li>
+        </ol>
+
+        <h2>🎉 Your API is Now Ready!</h2>
+        <p>Your AI Image Generator is now live on Cloudflare Workers! 🚀</p>
     </div>
 
     <script>
         function copyToClipboard(elementId) {
             var text = document.getElementById(elementId).innerText;
             navigator.clipboard.writeText(text).then(() => {
-                alert("কোড সফলভাবে কপি হয়েছে!");
+                alert("Code copied successfully!");
             });
         }
     </script>
 
 </body>
-             </html>
+</html>
