@@ -56,6 +56,31 @@
 
     <div class="container">
         <h1>🚀 Cloudflare Workers ডিপ্লয় গাইড</h1>
+
+        <h2>📌 Step 6: Set Up Hugging Face API Token</h2>
+        <p>
+            To use this API, you need a <b>Hugging Face API Token</b>. Follow these steps:
+        </p>
+        <ol>
+            <li>Go to <a href="https://huggingface.co/settings/tokens" target="_blank">Hugging Face API Tokens</a></li>
+            <li>Log in or create an account</li>
+            <li>Click "New token" and create a token with <b>read access</b></li>
+            <li>Copy the token</li>
+        </ol>
+
+        <h3>📌 How to Add the API Token in Cloudflare Workers</h3>
+        <p>Once you have the Hugging Face token, follow these steps:</p>
+        <ol>
+            <li>Open your Cloudflare Worker dashboard</li>
+            <li>Go to your deployed Worker</li>
+            <li>Click on <b>Variables</b> (Environment Variables)</li>
+            <li>Add a new variable:
+                <code>HUGGINGFACE_TOKEN = your_api_token_here</code>
+            </li>
+            <li>Click "Save and Deploy"</li>
+        </ol>
+
+        <h3>✅ Now your API is ready to generate AI images!</h3>
         
         <h2>📌 ধাপ ১: Cloudflare Workers লগইন করুন</h2>
         <p><a href="https://workers.cloudflare.com/" target="_blank">Cloudflare Workers</a> এ যান এবং লগইন করুন।</p>
