@@ -74,17 +74,21 @@
             100% { transform: rotate(360deg); }
         }
         /* ✅ Fixed Footer (Centered) */
-        footer {
-		position: fixed;
-                bottom: 10px;
-                width: 100%;
-                text-align: center;
-                text-decoration: none;
-                font-size: 14px;
-                color: white;
-                border-radius: 100px;
-                border: 2px solid white;
-                box-shadow: 3px 6px rgba(255, 255, 255, 0.1);
+        .footer {
+    position: fixed;
+    bottom: 10px;
+    left: 50%; /* মাঝখানে নিয়ে আসবে */
+    transform: translateX(-50%); /* এক্স-অক্ষ বরাবর মাঝখানে ঠিক করবে */
+    width: 90%; /* দুই পাশে সমান গ্যাপ রাখবে */
+    max-width: 600px; /* চাইলে সর্বোচ্চ প্রস্থ নির্ধারণ করতে পারেন */
+    text-align: center;
+    font-size: 14px;
+    color: white;
+    background-color: rgba(0, 0, 0, 0.8); /* ব্যাকগ্রাউন্ড দেওয়া হয়েছে */
+    padding: 10px 20px; /* ফুটারের ভিতরের প্যাডিং ঠিক করা */
+    border-radius: 100px;
+    border: 2px solid white;
+    box-shadow: 3px 6px rgba(255, 255, 255, 0.1);
 	}
         /* ✅ Video Player Modal */
         #videoModal {
@@ -150,11 +154,10 @@
 </div>
 
     <!-- ✅ Fixed Footer -->
-    <footer
+<div class="footer">
     <p>Made with ❤️ by <a href="https://t.me/Farooq_is_king" target="_blank"><b>WOODcraft</b></a></p>
-										    
-										   
-    </footer>
+</div>
+										    										
 
     <script>
         let videoURL = "";
