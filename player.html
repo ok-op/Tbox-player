@@ -122,12 +122,27 @@
         .close-btn {
             background: red;
             color: white;
-            font-weight: bold;
-            border: none;
-            padding: 5px 10px;
-            cursor: pointer;
-            margin-top: 10px;
-        }
+	}
+	    /* ব্র্যান্ড নেমের স্টাইল */
+.brand-name {
+    font-size: 20px;
+    font-weight: bold;
+    text-align: center;
+    margin-top: 10px; /* Close বাটনের নিচে কিছু গ্যাপ */
+    font-family: Arial, sans-serif;
+    background-image: linear-gradient(45deg, #ff0000, #ff7300, #ffeb00, #47ff00, #00ffee, #2a2aff, #aa00ff);
+    background-size: 400% 400%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: colorAnimation 3s infinite linear;
+}
+
+/* রঙ পরিবর্তনের এনিমেশন */
+@keyframes colorAnimation {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
     </style>
 </head>
 <body>
@@ -157,11 +172,15 @@
     </div>
 
     <!-- ✅ Video Modal Player -->
-    <div id="videoModal">
-        <video id="videoPlayer" controls></video>
-        <br>
-        <button class="close-btn" onclick="closeVideoPlayer()"><b><i class="fa fa-times" aria-hidden="true"></i> Close</button>
-    </div>
+<div id="videoModal">
+    <video id="videoPlayer" controls></video>
+    <br>
+    <button class="close-btn" onclick="closeVideoPlayer()">
+        <b><i class="fa fa-times" aria-hidden="true"></i> Close</b>
+    </button>
+    
+    <!-- 🐦WOODcraft🐦 ব্র্যান্ড নেম -->
+    <p class="brand-name">🐦WOODcraft🐦</p>
 </div>
 
     <div class="main-content">
