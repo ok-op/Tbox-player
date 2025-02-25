@@ -74,22 +74,27 @@
             100% { transform: rotate(360deg); }
         }
         /* ✅ Fixed Footer (Centered) */
-        .footer {
-		position: fixed;
-                bottom: 10px;
-		margin-top: 20px;
-                left: 50%; /* মাঝখানে নিয়ে আসবে */
-                transform: translateX(-50%); /* এক্স-অক্ষ বরাবর মাঝখানে ঠিক করবে */
-                width: 90%; /* দুই পাশে সমান গ্যাপ রাখবে */
-                max-width: 600px; /* চাইলে সর্বোচ্চ প্রস্থ নির্ধারণ করতে পারেন */
-                text-align: center;
-                font-size: 14px;
-                color: rgba(0, 0, 0, 0.8);
-                /* background-color: rgba(0, 0, 0, 0.8); /* ব্যাকগ্রাউন্ড দেওয়া হয়েছে */
-                padding: 10px 20px; /* ফুটারের ভিতরের প্যাডিং ঠিক করা */
-                border-radius: 100px;
-                border: 2px solid rgba(0, 0, 0, 0.8);
-                box-shadow: 3px 6px rgba(255, 255, 255, 0.1);
+	.footer a {
+            color: #ffcc00;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .footer a:hover {
+            text-decoration: underline;
+        }
+        .footer__copyright {
+            font-size: 14px; /* ফন্ট সাইজ */
+            font-weight: bold; /* টেক্সট মোটা করা */
+            margin-top: 5px;
+            margin-bottom: 10px;
+            animation: footer__copyrightAnimation 2s linear infinite;
+        }
+        @keyframes footer__copyrightAnimation {
+            0% { color: red; }
+            25% { color: blue; }
+            50% { color: green; }
+            75% { color: orange; }
+            100% { color: red; }
 	}
         /* ✅ Video Player Modal */
         #videoModal {
@@ -154,10 +159,15 @@
     </div>
 </div>
 
-    <!-- ✅ Fixed Footer -->
-<div class="footer">
-    <p>Made with ❤️ by <a href="https://t.me/Farooq_is_king" target="_blank"><b>WOODcraft</b></a></p>
-</div>
+    <div class="main-content">
+  <!-- Main content here -->
+    <!-- ফুটার -->
+    <footer class="footer">
+        𝐏𝐨𝐰𝐞𝐫𝐞𝐝 𝐁𝐲 ◉ <a href="https://t.me/Opleech_WD" target="_blank"><i class="fa fa-telegram" aria-hidden="true"></i> 𝐖𝐎𝐎𝐃𝐜𝐫𝐚𝐟𝐭</a>
+        <div class="footer__copyright">
+            © 2025 TeraBox Video Downloader. All rights reserved.
+        </div>
+    </footer>
 										    										
 
     <script>
