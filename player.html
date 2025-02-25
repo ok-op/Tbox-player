@@ -74,25 +74,18 @@
             100% { transform: rotate(360deg); }
         }
         /* ✅ Fixed Footer (Centered) */
-        .footer {
-            position: fixed;
-            bottom: 0;
-            margin-top: 10px;
-            width: 100%;
-            background-color: #333;
-            color: white;
-            text-align: center;
-            text-decoration: none;
-            padding: 5px;
-            font-size: 14px;
-	    font-weight: bold;
-            border-top: 6px solid transparent;
-            left: 0;
-            right: 0;
-	    border: 2px solid green;
-            box-shadow: 3px 6px DeepPink;
-            border-top-color: DarkMagenta;
-        }
+        footer {
+		position: fixed;
+                bottom: 10px;
+                width: 100%;
+                text-align: center;
+                text-decoration: none;
+                font-size: 14px;
+                color: white;
+                border-radius: 100px;
+                border: 2px solid white;
+                box-shadow: 3px 6px rgba(255, 255, 255, 0.1);
+	}
         /* ✅ Video Player Modal */
         #videoModal {
             display: none;
@@ -154,13 +147,14 @@
         <br>
         <button class="close-btn" onclick="closeVideoPlayer()"><b><i class="fa fa-times" aria-hidden="true"></i> Close</button>
     </div>
-	<br>
+</div>
 
     <!-- ✅ Fixed Footer -->
-    <div class="footer">
-        Developed by <a href="https://t.me/Farooq_is_king" target="_blank" style="color: #ffcc00;"><i class="fa fa-user-circle-o" aria-hidden="true"></i> WOODcraft</a>
-	    <p class="wood"> © 2025 TeraBox Video downloader & Player. All rights reserved.</p>
-    </div>
+    <footer
+    <p>Made with ❤️ by <a href="https://t.me/Farooq_is_king" target="_blank"><b>WOODcraft</b></a></p>
+										    
+										   
+    </footer>
 
     <script>
         let videoURL = "";
